@@ -131,7 +131,7 @@ class BootstrapButtonMixin(IconPluginMixin):
     class Media:
         js = ['cascade/js/admin/buttonmixin.js']
 
-    def render(self, context, instance, placeholder):
+    def render(self, context, instance, placeholder, renderer=None):
         context = super(BootstrapButtonMixin, self).render(context, instance, placeholder)
         try:
             icon_font = self.get_icon_font(instance)

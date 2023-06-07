@@ -63,7 +63,7 @@ class JSONMultiWidget(widgets.MultiWidget):
             for field in self.normalized_fields
         )
 
-    def render(self, name, value, attrs):
+    def render(self, name, value, attrs, renderer=None):
         values = self.decompress(value)
         render_fieldsets = []
         for fieldset in self.glossary_fields:
@@ -182,7 +182,7 @@ class ColorPickerWidget(widgets.MultiWidget):
         )
         return values
 
-    def render(self, name, values, attrs):
+    def render(self, name, values, attrs, renderer=None):
         disabled, color = values
         elem_id = attrs['id']
         attrs = dict(attrs)
@@ -254,7 +254,7 @@ class MultipleTextInputWidget(widgets.MultiWidget):
             values[key] = escape(data.get('{0}-{1}'.format(name, key), ''))
         return values
 
-    def render(self, name, value, attrs):
+    def render(self, name, value, attr, renderer=None):
         widgets = []
         values = value or {}
         elem_id = attrs['id']
@@ -328,7 +328,7 @@ class SetBorderWidget(widgets.MultiWidget):
         )
         return values
 
-    def render(self, name, values, attrs):
+    def render(self, name, values, attrs, renderer=None):
         width, style, color = values
         elem_id = attrs['id']
         attrs = dict(attrs)

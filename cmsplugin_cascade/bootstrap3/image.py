@@ -82,7 +82,7 @@ class BootstrapImagePlugin(ImageAnnotationMixin, LinkPluginBase):
         kwargs.update(form=Form)
         return super(BootstrapImagePlugin, self).get_form(request, obj, **kwargs)
 
-    def render(self, context, instance, placeholder):
+    def render(self, context, instance, placeholder, renderer=None):
         is_responsive = 'img-responsive' in instance.glossary.get('image_shapes', [])
         options = dict(instance.get_complete_glossary(), is_responsive=is_responsive)
         tags = utils.get_image_tags(context, instance, options)

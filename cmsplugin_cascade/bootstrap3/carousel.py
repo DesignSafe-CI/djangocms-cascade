@@ -141,7 +141,7 @@ class CarouselSlidePlugin(ImageAnnotationMixin, BootstrapPluginBase):
     render_template = 'cascade/bootstrap3/carousel-slide.html'
     alien_child_classes = True
 
-    def render(self, context, instance, placeholder):
+    def render(self, context, instance, placeholder, renderer=None):
         # slide image shall be rendered in a responsive context using the ``<picture>`` element
         elements = utils.get_picture_elements(context, instance)
         fluid = instance.get_complete_glossary().get('fluid') == 'on'

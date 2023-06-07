@@ -148,7 +148,7 @@ class BootstrapGalleryPlugin(CascadePluginBase):
         form = super(BootstrapGalleryPlugin, self).get_form(request, obj, **kwargs)
         return form
 
-    def render(self, context, instance, placeholder):
+    def render(self, context, instance, placeholder, renderer=None):
         gallery_instances = []
         options = dict(instance.get_complete_glossary())
         for inline_element in instance.sortinline_elements.all():

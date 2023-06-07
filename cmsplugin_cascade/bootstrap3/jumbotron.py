@@ -179,7 +179,7 @@ class BootstrapJumbotronPlugin(BootstrapPluginBase):
         form = super(BootstrapJumbotronPlugin, self).get_form(request, obj, **kwargs)
         return form
 
-    def render(self, context, instance, placeholder):
+    def render(self, context, instance, placeholder, renderer=None):
         # image shall be rendered in a responsive context using the ``<picture>`` element
         elements = get_picture_elements(context, instance)
         context.update({
