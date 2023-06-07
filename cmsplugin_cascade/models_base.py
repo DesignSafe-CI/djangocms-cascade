@@ -21,7 +21,7 @@ class CascadeModelBase(CMSPlugin):
     class Meta:
         abstract = True
 
-    cmsplugin_ptr = models.OneToOneField(CMSPlugin, related_name='+', parent_link=True)
+    cmsplugin_ptr = models.OneToOneField(CMSPlugin, related_name='+', parent_link=True, on_delete=models.CASCADE)
     glossary = JSONField(blank=True, default={})
 
     def __str__(self):
