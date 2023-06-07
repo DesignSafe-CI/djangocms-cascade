@@ -104,6 +104,7 @@ class InlineCascadeElement(models.Model):
     cascade_element = models.ForeignKey(
         CascadeElement,
         related_name='inline_elements',
+        on_delete=models.CASCADE
     )
 
     glossary = JSONField(blank=True, default={})
@@ -113,7 +114,7 @@ class InlineCascadeElement(models.Model):
 
 
 class SortableInlineCascadeElement(models.Model):
-    cascade_element = models.ForeignKey(CascadeElement, related_name='sortinline_elements')
+    cascade_element = models.ForeignKey(CascadeElement, related_name='sortinline_elements', on_delete=models.CASCADE)
     glossary = JSONField(blank=True, default={})
     order = models.PositiveIntegerField(verbose_name=_("Sort by"), db_index=True)
 
