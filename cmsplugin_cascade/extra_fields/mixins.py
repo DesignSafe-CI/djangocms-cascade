@@ -4,8 +4,7 @@ from __future__ import unicode_literals
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.exceptions import ObjectDoesNotExist
 from django.forms import MediaDefiningClass, widgets
-from django.utils import six
-from django.utils.encoding import python_2_unicode_compatible
+import six
 from django.utils.html import format_html
 from django.utils.translation import ugettext_lazy as _
 
@@ -14,7 +13,6 @@ from cmsplugin_cascade.fields import GlossaryField
 from cmsplugin_cascade.widgets import MultipleCascadingSizeWidget
 
 
-@python_2_unicode_compatible
 class ExtraFieldsMixin(six.with_metaclass(MediaDefiningClass)):
     """
     If a Cascade plugin is listed in ``settings.CMSPLUGIN_CASCADE['plugins_with_extra_fields']``,

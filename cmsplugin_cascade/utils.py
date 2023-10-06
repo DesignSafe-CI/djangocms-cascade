@@ -12,7 +12,7 @@ try:
 except ImportError:
     # backported from Django-1.10
     # TODO: remove when dropping support for Django-1.9
-    from django.utils import six
+    import six
     from django.utils.functional import lazy, wraps, Promise
 
     def keep_lazy(*resultclasses):

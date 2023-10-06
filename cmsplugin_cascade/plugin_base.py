@@ -5,7 +5,7 @@ from collections import OrderedDict
 
 from django.core.exceptions import ImproperlyConfigured
 from django.forms import MediaDefiningClass
-from django.utils import six
+import six
 from django.utils.functional import lazy
 from django.utils.module_loading import import_string
 from django.utils.text import format_lazy as string_concat

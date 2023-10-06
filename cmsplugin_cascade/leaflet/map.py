@@ -14,7 +14,7 @@ from django.core.exceptions import ValidationError
 from django.utils.html import format_html, strip_tags, strip_spaces_between_tags
 from django.utils.safestring import mark_safe
 from django.utils.translation import ungettext_lazy, ugettext_lazy as _
-from django.utils import six
+import six
 
 from filer.fields.image import AdminFileWidget, FilerImageField
 from filer.models.imagemodels import Image
