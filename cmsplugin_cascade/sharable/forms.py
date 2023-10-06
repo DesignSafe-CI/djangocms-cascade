@@ -12,7 +12,7 @@ from django.utils.encoding import force_text
 from django.utils.html import format_html
 from django.utils.translation import ugettext_lazy as _
 from django.utils.safestring import mark_safe
-from django.utils.six import with_metaclass
+from six import with_metaclass
 
 from cms.plugin_pool import plugin_pool
 from cmsplugin_cascade.models import SharedGlossary

@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.forms import widgets, MediaDefiningClass
-from django.utils.six import with_metaclass
+from six import with_metaclass
 from django.utils.translation import ugettext_lazy as _
 from django.template.loader import get_template, TemplateDoesNotExist
 

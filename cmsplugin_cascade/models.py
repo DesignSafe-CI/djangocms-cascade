@@ -9,7 +9,7 @@ from django.contrib.sites.models import Site
 from django.db import models
 from django.utils.encoding import force_text
 from django.utils.functional import cached_property
-from django.utils.six.moves.urllib.parse import urljoin
+from six.moves.urllib.parse import urljoin
 from django.utils.translation import ugettext_lazy as _
 
 from jsonfield.fields import JSONField

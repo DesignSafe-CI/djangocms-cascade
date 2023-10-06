@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.db import migrations
-from django.utils.six import string_types
+from six import string_types
 from cmsplugin_cascade.models import CascadeElement
 
 

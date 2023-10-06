@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from django.forms import MediaDefiningClass
 from django.contrib import admin
 from django.utils.module_loading import import_string
-from django.utils.six import with_metaclass
+from six import with_metaclass
 from cmsplugin_cascade import app_settings
 from cmsplugin_cascade.models import Segmentation
 
