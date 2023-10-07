@@ -7,6 +7,7 @@ try:
     from html.parser import HTMLParser  # py3
 except ImportError:
     from HTMLParser import HTMLParser  # py2
+from html import unescape
 from django.core.exceptions import ValidationError
 from django.forms import widgets
 import six
@@ -75,7 +76,7 @@ class JSONMultiWidget(widgets.MultiWidget):
                 field_attrs.update(id='{id}_{0}'.format(field.name, **attrs))
                 field_value = values.get(field.name)
                 if isinstance(field_value, six.string_types):
-                    field_value = self.html_parser.unescape(field_value)
+                    field_value = unescape(field_value)
                 render_fields.append((
                     field.name,
                     six.text_type(field.label),

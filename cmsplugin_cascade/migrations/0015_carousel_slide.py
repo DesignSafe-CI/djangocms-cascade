@@ -8,6 +8,7 @@ try:
     from html.parser import HTMLParser  # py3
 except ImportError:
     from HTMLParser import HTMLParser  # py2
+from html import unescape
 from django.db import migrations
 from cms.api import add_plugin
 from cms.models.pluginmodel import CMSPlugin
@@ -58,7 +59,7 @@ def forwards(apps, schema_editor):
         text_element = add_plugin(cascade_element.placeholder, TextPlugin, cascade_element.language,
                                   target=cascade_element)
 
-        old_body = html_parser.unescape(caption)
+        old_body = unescape(caption)
         new_body, count = _replace_text_body(
             old_body,
             input_pattern=r'<img ([^>]*)\bid="plugin_obj_(?P<pk>\d+)"([^>]*)/?>',

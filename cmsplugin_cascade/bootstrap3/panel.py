@@ -6,7 +6,7 @@ try:
     from html.parser import HTMLParser  # py3
 except ImportError:
     from HTMLParser import HTMLParser  # py2
-
+from html import unescape
 from django import VERSION as DJANGO_VERSION
 from django.forms import widgets
 from django.utils.html import format_html, format_html_join
@@ -92,12 +92,12 @@ class BootstrapPanelPlugin(TransparentContainer, BootstrapPluginBase):
     @classmethod
     def get_identifier(cls, obj):
         identifier = super(BootstrapPanelPlugin, cls).get_identifier(obj)
-        heading = cls.html_parser.unescape(obj.glossary.get('heading', ''))
+        heading = unescape(obj.glossary.get('heading', ''))
         return format_html('{0}{1}', identifier, heading)
 
     def render(self, context, instance, placeholder):
-        heading = self.html_parser.unescape(instance.glossary.get('heading', ''))
-        footer = self.html_parser.unescape(instance.glossary.get('footer', ''))
+        heading = unescape(instance.glossary.get('heading', ''))
+        footer = unescape(instance.glossary.get('footer', ''))
         context.update({
             'instance': instance,
             'panel_type': instance.glossary.get('panel_type', 'panel-default'),

@@ -5,6 +5,7 @@ try:
     from html.parser import HTMLParser  # py3
 except ImportError:
     from HTMLParser import HTMLParser  # py2
+from html import unescape
 from django.forms import widgets
 from django.utils.translation import ungettext_lazy, ugettext_lazy as _
 from django.utils.text import Truncator
@@ -101,7 +102,7 @@ class BootstrapAccordionPanelPlugin(TransparentContainer, BootstrapPluginBase):
     @classmethod
     def get_identifier(cls, obj):
         identifier = super(BootstrapAccordionPanelPlugin, cls).get_identifier(obj)
-        panel_title = HTMLParser().unescape(obj.glossary.get('panel_title', ''))
+        panel_title = unescape(obj.glossary.get('panel_title', ''))
         panel_title = Truncator(panel_title).words(3, truncate=' ...')
         return format_html('{0}{1}', identifier, panel_title)
 
