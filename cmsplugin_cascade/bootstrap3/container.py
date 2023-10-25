@@ -9,7 +9,7 @@ from django.forms import widgets
 from django.core.exceptions import ValidationError, ImproperlyConfigured
 from django.utils.html import format_html, format_html_join
 from django.utils.encoding import force_text
-from django.utils.translation import ungettext_lazy, ugettext_lazy as _
+from django.utils.translation import ngettext_lazy, gettext_lazy as _
 from django.forms.models import ModelForm
 from django.forms.fields import ChoiceField
 
@@ -109,7 +109,7 @@ class BootstrapRowForm(ManageChildrenFormMixin, ModelForm):
     Form class to add non-materialized field to count the number of children.
     """
     ROW_NUM_COLUMNS = (1, 2, 3, 4, 6, 12,)
-    num_children = ChoiceField(choices=tuple((i, ungettext_lazy('{0} column', '{0} columns', i).format(i)) for i in ROW_NUM_COLUMNS),
+    num_children = ChoiceField(choices=tuple((i, ngettext_lazy('{0} column', '{0} columns', i).format(i)) for i in ROW_NUM_COLUMNS),
         initial=3, label=_('Columns'),
         help_text=_('Number of columns to be created with this row.'))
 
@@ -125,7 +125,7 @@ class BootstrapRowPlugin(BootstrapPluginBase):
     def get_identifier(cls, obj):
         identifier = super(BootstrapRowPlugin, cls).get_identifier(obj)
         num_cols = obj.get_num_children()
-        content = ungettext_lazy("with {0} column", "with {0} columns", num_cols).format(num_cols)
+        content = ngettext_lazy("with {0} column", "with {0} columns", num_cols).format(num_cols)
         return format_html('{0}{1}', identifier, content)
 
     def save_model(self, request, obj, form, change):
@@ -166,7 +166,7 @@ class BootstrapColumnPlugin(BootstrapPluginBase):
             raise ImproperlyConfigured("A BootstrapColumnPlugin requires a valid parent")
 
         glossary_fields = []
-        units = [ungettext_lazy("{} unit", "{} units", i).format(i) for i in range(0, 13)]
+        units = [ngettext_lazy("{} unit", "{} units", i).format(i) for i in range(0, 13)]
         breakpoints = parent_obj.get_complete_glossary()['breakpoints']
         for bp in breakpoints:
             try:
@@ -320,7 +320,7 @@ class BootstrapColumnPlugin(BootstrapPluginBase):
             content = _('widths: {0} units').format(' / '.join(widths))
         elif len(widths) == 1:
             width = int(widths[0])
-            content = ungettext_lazy('default width: {0} unit', 'default width: {0} units', width).format(width)
+            content = ngettext_lazy('default width: {0} unit', 'default width: {0} units', width).format(width)
         else:
             content = _('unknown width')
         return format_html('{0}{1}', identifier, content)

@@ -9,7 +9,7 @@ except ImportError:
 
 from django.forms import widgets, ModelChoiceField
 from django.utils.html import format_html
-from django.utils.translation import ungettext_lazy, ugettext_lazy as _
+from django.utils.translation import ngettext_lazy, gettext_lazy as _
 from django.forms.fields import IntegerField
 from django.forms.models import ModelForm
 
@@ -84,7 +84,7 @@ class CarouselPlugin(BootstrapPluginBase):
     def get_identifier(cls, obj):
         identifier = super(CarouselPlugin, cls).get_identifier(obj)
         num_cols = obj.get_num_children()
-        content = ungettext_lazy('with {0} slide', 'with {0} slides', num_cols).format(num_cols)
+        content = ngettext_lazy('with {0} slide', 'with {0} slides', num_cols).format(num_cols)
         return format_html('{0}{1}', identifier, content)
 
     @classmethod

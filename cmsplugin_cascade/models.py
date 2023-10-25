@@ -10,7 +10,7 @@ from django.db import models
 from django.utils.encoding import force_text
 from django.utils.functional import cached_property
 from six.moves.urllib.parse import urljoin
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from jsonfield.fields import JSONField
 from filer.fields.file import FilerFileField

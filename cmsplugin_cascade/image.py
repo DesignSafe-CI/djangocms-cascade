@@ -6,7 +6,7 @@ from django.contrib.admin.sites import site
 from django.core.exceptions import ObjectDoesNotExist
 from django.forms import widgets
 from django.db.models.fields.related import ManyToOneRel
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from filer.fields.image import AdminFileWidget, FilerImageField
 from filer.models.imagemodels import Image

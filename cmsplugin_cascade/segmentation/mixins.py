@@ -10,7 +10,7 @@ from django.urls import reverse
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.template.response import TemplateResponse
 import six
-from django.utils.translation import ugettext_lazy as _, ungettext
+from django.utils.translation import gettext_lazy as _, ngettext
 from django.utils.encoding import force_text
 from django.utils.html import format_html
 
@@ -133,7 +133,7 @@ class EmulateUserAdminMixin(object):
             (),  # disable list_editable
             self)
         cl.formset = None
-        selection_note_all = ungettext('%(total_count)s selected',
+        selection_note_all = ngettext('%(total_count)s selected',
             'All %(total_count)s selected', cl.result_count)
 
         context = {

@@ -5,7 +5,7 @@ import warnings
 
 from django.core.exceptions import ValidationError
 from django.contrib.staticfiles.finders import get_finders
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 try:
     from django.utils.functional import keep_lazy_text

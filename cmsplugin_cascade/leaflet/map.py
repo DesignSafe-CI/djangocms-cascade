@@ -13,7 +13,7 @@ from django.contrib.admin.sites import site
 from django.core.exceptions import ValidationError
 from django.utils.html import format_html, strip_tags, strip_spaces_between_tags
 from django.utils.safestring import mark_safe
-from django.utils.translation import ungettext_lazy, ugettext_lazy as _
+from django.utils.translation import ngettext_lazy, gettext_lazy as _
 import six
 
 from filer.fields.image import AdminFileWidget, FilerImageField
@@ -321,7 +321,7 @@ class LeafletPlugin(CascadePluginBase):
     def get_identifier(cls, obj):
         identifier = super(LeafletPlugin, cls).get_identifier(obj)
         num_elems = obj.inline_elements.count()
-        content = ungettext_lazy("with {0} marker", "with {0} markers", num_elems).format(num_elems)
+        content = ngettext_lazy("with {0} marker", "with {0} markers", num_elems).format(num_elems)
         return format_html('{0}{1}', identifier, content)
 
     @classmethod

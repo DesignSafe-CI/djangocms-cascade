@@ -13,7 +13,7 @@ from django.forms import widgets
 import six
 from django.utils.safestring import mark_safe
 from django.utils.html import escape, format_html, format_html_join
-from django.utils.translation import ugettext_lazy as _, ugettext
+from django.utils.translation import gettext_lazy as _, gettext
 from .fields import GlossaryField
 
 
@@ -118,7 +118,7 @@ class CascadingSizeWidgetMixin(object):
                 if u not in self.POSSIBLE_UNITS:
                     raise ValidationError('{} is not a valid unit for a size field'.format(u))
         regex = re.compile(r'^(-?\d+)({})$'.format('|'.join(units)))
-        endings = (' %s ' % ugettext("or")).join("'%s'" % u.replace('%', '%%') for u in units)
+        endings = (' %s ' % gettext("or")).join("'%s'" % u.replace('%', '%%') for u in units)
         params = {'label': '%(label)s', 'value': '%(value)s', 'field': '%(field)s', 'endings': endings}
         return regex, self.invalid_message % params
 

@@ -8,7 +8,7 @@ from django.urls import reverse
 from django.db.models.signals import pre_migrate, post_migrate
 from django.db.utils import DatabaseError
 from django.utils.encoding import force_text
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 
 class CascadeConfig(AppConfig):

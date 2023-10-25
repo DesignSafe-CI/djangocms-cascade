@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 
 from django.forms import widgets
 from django.forms.models import ModelForm
-from django.utils.translation import ungettext_lazy, ugettext_lazy as _
+from django.utils.translation import ngettext_lazy, gettext_lazy as _
 from django.utils.text import Truncator
 from django.utils.html import format_html
 from django.forms.fields import IntegerField
@@ -40,7 +40,7 @@ class BootstrapTabSetPlugin(TransparentWrapper, BootstrapPluginBase):
     def get_identifier(cls, instance):
         identifier = super(BootstrapTabSetPlugin, cls).get_identifier(instance)
         num_cols = instance.get_num_children()
-        content = ungettext_lazy('with {} tab', 'with {} tabs', num_cols).format(num_cols)
+        content = ngettext_lazy('with {} tab', 'with {} tabs', num_cols).format(num_cols)
         return format_html('{0}{1}', identifier, content)
 
     def save_model(self, request, obj, form, change):

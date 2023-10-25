@@ -6,7 +6,7 @@ from django.core.exceptions import ValidationError
 from django.contrib import admin
 from django.utils.encoding import force_text
 from django.utils.functional import cached_property
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django.forms import widgets
 from cms.plugin_pool import plugin_pool
 from cmsplugin_cascade import app_settings

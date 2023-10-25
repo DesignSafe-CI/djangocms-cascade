@@ -7,7 +7,7 @@ from django.db.models.fields.related import ManyToOneRel
 from django.contrib.admin import StackedInline
 from django.contrib.admin.sites import site
 from django.utils.html import format_html
-from django.utils.translation import ungettext_lazy, ugettext_lazy as _
+from django.utils.translation import ngettext_lazy, gettext_lazy as _
 
 from filer.fields.image import AdminFileWidget, FilerImageField
 from filer.models.imagemodels import Image
@@ -187,7 +187,7 @@ class BootstrapGalleryPlugin(CascadePluginBase):
     def get_identifier(cls, obj):
         identifier = super(BootstrapGalleryPlugin, cls).get_identifier(obj)
         num_elems = obj.sortinline_elements.count()
-        content = ungettext_lazy("with {0} image", "with {0} images", num_elems).format(num_elems)
+        content = ngettext_lazy("with {0} image", "with {0} images", num_elems).format(num_elems)
         return format_html('{0}{1}', identifier, content)
 
 plugin_pool.register_plugin(BootstrapGalleryPlugin)

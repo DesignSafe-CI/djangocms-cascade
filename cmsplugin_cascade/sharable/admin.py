@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.contrib import admin
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 from django.utils.html import format_html
 
 from cms.plugin_pool import plugin_pool

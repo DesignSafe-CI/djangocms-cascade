@@ -11,7 +11,7 @@ from django import VERSION as DJANGO_VERSION
 from django.forms import widgets
 from django.utils.html import format_html, format_html_join
 from django.utils.encoding import force_text
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from cms.plugin_pool import plugin_pool
 from cmsplugin_cascade.fields import GlossaryField

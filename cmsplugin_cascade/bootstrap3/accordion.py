@@ -7,7 +7,7 @@ except ImportError:
     from HTMLParser import HTMLParser  # py2
 from html import unescape
 from django.forms import widgets
-from django.utils.translation import ungettext_lazy, ugettext_lazy as _
+from django.utils.translation import ngettext_lazy, gettext_lazy as _
 from django.utils.text import Truncator
 from django.utils.html import format_html
 from django.forms.models import ModelForm
@@ -59,7 +59,7 @@ class BootstrapAccordionPlugin(TransparentWrapper, BootstrapPluginBase):
     def get_identifier(cls, obj):
         identifier = super(BootstrapAccordionPlugin, cls).get_identifier(obj)
         num_cols = obj.get_num_children()
-        content = ungettext_lazy('with {0} panel', 'with {0} panels', num_cols).format(num_cols)
+        content = ngettext_lazy('with {0} panel', 'with {0} panels', num_cols).format(num_cols)
         return format_html('{0}{1}', identifier, content)
 
     def save_model(self, request, obj, form, change):

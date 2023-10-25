@@ -10,7 +10,7 @@ from django.apps import apps
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from django.utils.encoding import force_text
 from django.utils.html import format_html
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django.utils.safestring import mark_safe
 from six import with_metaclass
 

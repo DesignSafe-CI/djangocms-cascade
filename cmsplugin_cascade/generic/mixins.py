@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from django.forms import widgets, models
 from django.utils.html import format_html
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from cmsplugin_cascade import app_settings
 from cmsplugin_cascade.fields import GlossaryField
 from cmsplugin_cascade.models import CascadePage
