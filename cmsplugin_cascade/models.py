@@ -7,7 +7,7 @@ from collections import OrderedDict
 from django.conf import settings
 from django.contrib.sites.models import Site
 from django.db import models
-from django.utils.encoding import force_text
+from django.utils.encoding import force_str
 from django.utils.functional import cached_property
 from six.moves.urllib.parse import urljoin
 from django.utils.translation import gettext_lazy as _
@@ -161,7 +161,7 @@ class PluginExtraFields(models.Model):
         unique_together = ['plugin_type', 'site']
 
     def __str__(self):
-        return force_text(self.name)
+        return force_str(self.name)
 
     @cached_property
     def name(self):

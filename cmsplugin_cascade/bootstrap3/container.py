@@ -8,7 +8,7 @@ from django.conf import settings
 from django.forms import widgets
 from django.core.exceptions import ValidationError, ImproperlyConfigured
 from django.utils.html import format_html, format_html_join
-from django.utils.encoding import force_text
+from django.utils.encoding import force_str
 from django.utils.translation import ngettext_lazy, gettext_lazy as _
 from django.forms.models import ModelForm
 from django.forms.fields import ChoiceField
@@ -37,7 +37,7 @@ class ContainerBreakpointsWidget(widgets.CheckboxSelectMultiple):
                         '<img src="' + settings.STATIC_URL + 'cascade/admin/breakpoints/{1}.svg" style="height: 55px;" />'
                         '<div class="label">{0}</div>'
                     '</div>'
-                '</div>', ((force_text(w), w.choice_value) for w in renderer)
+                '</div>', ((force_str(w), w.choice_value) for w in renderer)
             ))
 
 
@@ -78,7 +78,7 @@ class BootstrapContainerPlugin(BootstrapPluginBase):
         breakpoints = obj.glossary.get('breakpoints')
         content = obj.glossary.get('fluid') and '(fluid) ' or ''
         if breakpoints:
-            devices = ', '.join([force_text(BS3_BREAKPOINTS[bp][2]) for bp in breakpoints])
+            devices = ', '.join([force_str(BS3_BREAKPOINTS[bp][2]) for bp in breakpoints])
             content = _("{0}for {1}").format(content, devices)
         return format_html('{0}{1}', identifier, content)
 
@@ -177,7 +177,7 @@ class BootstrapColumnPlugin(BootstrapPluginBase):
                 last = None
             finally:
                 first = BS3_BREAKPOINT_KEYS.index(bp)
-                devices = ', '.join([force_text(BS3_BREAKPOINTS[b][2]) for b in BS3_BREAKPOINT_KEYS[first:last]])
+                devices = ', '.join([force_str(BS3_BREAKPOINTS[b][2]) for b in BS3_BREAKPOINT_KEYS[first:last]])
             if breakpoints.index(bp) == 0:
                 # first breakpoint
                 choices = tuple(('col-{}-{}'.format(bp, i), units[i]) for i in range(1, 13))

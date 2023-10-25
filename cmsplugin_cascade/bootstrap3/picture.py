@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.forms import widgets, ModelChoiceField
-from django.utils.encoding import force_text
+from django.utils.encoding import force_str
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
@@ -94,7 +94,7 @@ class BootstrapPicturePlugin(ImageAnnotationMixin, LinkPluginBase):
     def get_identifier(cls, obj):
         identifier = super(BootstrapPicturePlugin, cls).get_identifier(obj)
         try:
-            content = force_text(obj.image)
+            content = force_str(obj.image)
         except AttributeError:
             content = _("No Picture")
         return format_html('{0}{1}', identifier, content)

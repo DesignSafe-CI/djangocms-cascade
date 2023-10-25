@@ -10,7 +10,7 @@ from html import unescape
 from django import VERSION as DJANGO_VERSION
 from django.forms import widgets
 from django.utils.html import format_html, format_html_join
-from django.utils.encoding import force_text
+from django.utils.encoding import force_str
 from django.utils.translation import gettext_lazy as _
 
 from cms.plugin_pool import plugin_pool
@@ -44,7 +44,7 @@ class PanelTypeWidget(widgets.RadioSelect):
             format_html_join('\n', '<div class="field-box"><div class="panel {1}">'
                 '<div class="panel-heading">{2}</div><div class="panel-body">{3}</div>'
                 '</div><div class="label">{0}</div></div>',
-                ((force_text(w), w.choice_value, force_text(self.PANEL_TYPES[w.choice_value]), _("Content"))
+                ((force_str(w), w.choice_value, force_str(self.PANEL_TYPES[w.choice_value]), _("Content"))
                  for w in renderer)
             ))
 

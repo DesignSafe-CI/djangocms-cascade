@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 import re
 from django.core.exceptions import ValidationError
 from django.contrib import admin
-from django.utils.encoding import force_text
+from django.utils.encoding import force_str
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 from django.forms import widgets
@@ -96,7 +96,7 @@ class PluginExtraFieldsAdmin(admin.ModelAdmin):
                 return config.allow_override
 
         cascade_plugins = set([p for p in plugin_pool.get_all_plugins() if show_in_backend(p)])
-        return [(p.__name__, '{}: {}'.format(p.module, force_text(p.name))) for p in cascade_plugins]
+        return [(p.__name__, '{}: {}'.format(p.module, force_str(p.name))) for p in cascade_plugins]
 
     def get_form(self, request, obj=None, **kwargs):
         """

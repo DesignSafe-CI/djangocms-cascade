@@ -7,7 +7,7 @@ from django.core.exceptions import ImproperlyConfigured
 from django.urls import reverse
 from django.db.models.signals import pre_migrate, post_migrate
 from django.db.utils import DatabaseError
-from django.utils.encoding import force_text
+from django.utils.encoding import force_str
 from django.utils.translation import gettext_lazy as _
 
 
@@ -18,7 +18,7 @@ class CascadeConfig(AppConfig):
 
     def ready(self):
         if 'cmsplugin_cascade.icon' in settings.INSTALLED_APPS:
-            stylesSet = force_text(settings.CKEDITOR_SETTINGS.get('stylesSet'))
+            stylesSet = force_str(settings.CKEDITOR_SETTINGS.get('stylesSet'))
             if stylesSet != 'default:{}'.format(reverse('admin:cascade_texticon_wysiwig_config')):
                 msg = "settings.CKEDITOR_SETTINGS['stylesSet'] should be `format_lazy('default:{}', reverse_lazy('admin:cascade_texticon_wysiwig_config'))`"
                 raise ImproperlyConfigured(msg)

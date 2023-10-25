@@ -8,7 +8,7 @@ from django import forms
 from django.forms import fields
 from django.apps import apps
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
-from django.utils.encoding import force_text
+from django.utils.encoding import force_str
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 from django.utils.safestring import mark_safe
@@ -35,7 +35,7 @@ class SelectSharedGlossary(forms.Select):
             data = format_html(' data-glossary="{0}"', json.dumps(self._get_data_glossary(option_value)))
         else:
             data = mark_safe('')
-        option_value = force_text(option_value)
+        option_value = force_str(option_value)
         if option_value in selected_choices:
             selected_html = mark_safe(' selected="selected"')
             if not self.allow_multiple_selected:
@@ -44,7 +44,7 @@ class SelectSharedGlossary(forms.Select):
         else:
             selected_html = ''
         return format_html('<option value="{0}"{1}{2}>{3}</option>',
-                           option_value, selected_html, data, force_text(option_label))
+                           option_value, selected_html, data, force_str(option_label))
 
     def _get_data_glossary(self, option_value):
         shared_instance = self.choices.queryset.get(pk=option_value)
