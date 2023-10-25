@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.conf.urls import url
+from django.urls import re_path as url
 from django.forms import widgets
 from django.http.response import HttpResponse
 from django.template.loader import render_to_string

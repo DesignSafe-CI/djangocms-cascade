@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.conf.urls import url
+from django.urls import re_path as url
 from django.http.response import JsonResponse, HttpResponseNotFound
 from django.utils.html import format_html, format_html_join
 from django.utils.safestring import mark_safe

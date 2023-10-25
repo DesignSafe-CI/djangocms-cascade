@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 
 from distutils.version import LooseVersion
 
-from django.conf.urls import url
+from django.urls import re_path as url
 from django.contrib import admin
 from django.contrib.auth import get_user_model
 from django.urls import reverse
