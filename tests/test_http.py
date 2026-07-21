@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 import json
+from django.apps import apps
 from django.conf import settings
 from django.contrib import admin
 from django.test.utils import override_settings
 from cms.models import Page
-from cms.utils.compat.dj import is_installed
-from cms.test_utils.testcases import CMSTestCase, URL_CMS_PAGE_ADD, URL_CMS_PLUGIN_ADD
+from cms.test_utils.testcases import CMSTestCase
+
+URL_CMS_PAGE_ADD = '/admin/cms/page/add/'
+URL_CMS_PLUGIN_ADD = '/admin/cms/placeholder/add-plugin/'
 import pytest
 
 APPS_WITHOUT_REVERSION = [app for app in settings.INSTALLED_APPS if app != 'reversion']
@@ -72,10 +75,10 @@ class ContainerPluginTest(CMSTestCase):
     @override_settings(INSTALLED_APPS=APPS_WITHOUT_REVERSION)
     @pytest.mark.skip(reason="no way of currently testing this")
     def test_without_reversion(self):
-        self.assertFalse(is_installed('reversion'))
+        self.assertFalse(apps.is_installed('reversion'))
         self._create_and_configure_a_container_plugin()
 
     @pytest.mark.skip(reason="no way of currently testing this")
     def test_with_reversion(self):
-        self.assertTrue(is_installed('reversion'))
+        self.assertTrue(apps.is_installed('reversion'))
         self._create_and_configure_a_container_plugin()

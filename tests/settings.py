@@ -11,6 +11,8 @@ SECRET_KEY = 'test'
 
 SITE_ID = 1
 
+CMS_CONFIRM_VERSION4 = True
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -21,6 +23,7 @@ DATABASES = {
 STATIC_URL = '/static/'
 
 MEDIA_URL = '/media/'
+MEDIA_ROOT = '/private/tmp/djangocms-cascade-test-media'
 
 TEMPLATES = [{
     'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -43,7 +46,7 @@ TEMPLATES = [{
     }
 }]
 
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -89,6 +92,8 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 LANGUAGES = (
     ('en', 'English'),

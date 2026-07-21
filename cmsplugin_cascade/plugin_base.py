@@ -3,16 +3,16 @@ from __future__ import unicode_literals
 
 from collections import OrderedDict
 
+from django.apps import apps
 from django.core.exceptions import ImproperlyConfigured
 from django.forms import MediaDefiningClass
 import six
 from django.utils.functional import lazy
 from django.utils.module_loading import import_string
 from django.utils.text import format_lazy as string_concat
-from django.utils.safestring import SafeText, mark_safe
+from django.utils.safestring import SafeString, mark_safe
 
 from cms.plugin_base import CMSPluginBaseMetaclass, CMSPluginBase
-from cms.utils.compat.dj import is_installed
 
 from . import app_settings
 from .fields import GlossaryField
@@ -157,7 +157,7 @@ class CascadePluginBaseMetaclass(CascadePluginMixinMetaclass, CMSPluginBaseMetac
                 raise ImproperlyConfigured(msg)
         else:
             attrs['model'] = create_proxy_model(name, model_mixins, base_model, module=attrs.get('__module__'))
-        if is_installed('reversion'):
+        if apps.is_installed('reversion'):
             import reversion.revisions
             if not reversion.revisions.is_registered(base_model):
                 reversion.revisions.register(base_model)
@@ -312,7 +312,7 @@ class CascadePluginBase(six.with_metaclass(CascadePluginBaseMetaclass)):
         """
         Hook to return a description for the current model.
         """
-        return SafeText()
+        return SafeString()
 
     @classmethod
     def sanitize_model(cls, instance):
@@ -425,8 +425,11 @@ class CascadePluginBase(six.with_metaclass(CascadePluginBaseMetaclass)):
         Return the previous plugin instance for the given object.
         This differs from `obj.get_prev_sibling()` which returns an unsorted sibling.
         """
-        ordered_siblings = obj.get_siblings().filter(placeholder=obj.placeholder).order_by('position')
-        pos = list(ordered_siblings).index(obj.cmsplugin_ptr)
+        from cms.models import CMSPlugin
+        ordered_siblings = list(CMSPlugin.objects.filter(
+            placeholder=obj.placeholder, parent_id=obj.parent_id,
+        ).order_by('position'))
+        pos = ordered_siblings.index(obj.cmsplugin_ptr)
         if pos > 0:
             prev_sibling = ordered_siblings[pos - 1]
             return prev_sibling.get_bound_plugin()
@@ -436,9 +439,12 @@ class CascadePluginBase(six.with_metaclass(CascadePluginBaseMetaclass)):
         Return the next plugin instance for the given object.
         This differs from `obj.get_next_sibling()` which returns an unsorted sibling.
         """
-        ordered_siblings = obj.get_siblings().filter(placeholder=obj.placeholder).order_by('position')
-        pos = list(ordered_siblings).index(obj.cmsplugin_ptr)
-        if pos < ordered_siblings.count() - 1:
+        from cms.models import CMSPlugin
+        ordered_siblings = list(CMSPlugin.objects.filter(
+            placeholder=obj.placeholder, parent_id=obj.parent_id,
+        ).order_by('position'))
+        pos = ordered_siblings.index(obj.cmsplugin_ptr)
+        if pos < len(ordered_siblings) - 1:
             next_sibling = ordered_siblings[pos + 1]
             return next_sibling.get_bound_plugin()
 

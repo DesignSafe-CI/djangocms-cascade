@@ -7,10 +7,7 @@ from django.template.context import Context
 from cms.api import create_page
 from cms.test_utils.testcases import CMSTestCase
 
-from djangocms_helper.base_test import BaseTestCase
-
-
-class CascadeTestCase(CMSTestCase, BaseTestCase):
+class CascadeTestCase(CMSTestCase):
     home_page = None
 
     def setUp(self):
@@ -19,9 +16,13 @@ class CascadeTestCase(CMSTestCase, BaseTestCase):
             # >= Django CMS v3.5.x
             self.home_page.set_as_homepage()
 
-        self.placeholder = self.home_page.placeholders.get(slot='Main Content')
+        self.placeholder = self.home_page.get_placeholders('en').get(slot='Main Content')
 
-        self.request = self.get_request(self.home_page, 'en')
+        # A few integration tests exercise authenticated admin endpoints.
+        self.admin_user = self.get_superuser()
+        self.user = self.admin_user
+
+        self.request = self.get_request(language='en', page=self.home_page)
         self.admin_site = admin.sites.AdminSite()
 
     def get_request_context(self):

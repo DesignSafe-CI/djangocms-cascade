@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 
 from django import VERSION as DJANGO_VERSION
 from django.contrib import admin
-from django.contrib.admin.templatetags.admin_static import static
+from django.templatetags.static import static
 from django.forms import widgets
 from django.forms.utils import flatatt
 from django.utils.encoding import force_str
@@ -15,7 +15,7 @@ from cms.models.placeholderpluginmodel import PlaceholderReference
 from cms.plugin_pool import plugin_pool
 from cms.utils import get_language_from_request
 
-from jsonfield.fields import JSONField
+from django.db.models import JSONField
 from djangocms_text_ckeditor.models import Text
 from djangocms_text_ckeditor.utils import plugin_tags_to_id_list, replace_plugin_tags
 
@@ -27,7 +27,7 @@ class JSONAdminWidget(widgets.Textarea):
         attrs = {'cols': '40', 'rows': '3'}
         super(JSONAdminWidget, self).__init__(attrs)
 
-    def render(self, name, value, attrs=None):
+    def render(self, name, value, attrs=None, renderer=None):
         if value is None:
             value = ''
         if DJANGO_VERSION < (1, 11):

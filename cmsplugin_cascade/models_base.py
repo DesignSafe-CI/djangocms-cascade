@@ -5,7 +5,7 @@ from django.db import models
 from django.utils.html import mark_safe, format_html_join
 from django.utils.functional import cached_property
 
-from jsonfield.fields import JSONField
+from django.db.models import JSONField
 
 from cms.models import CMSPlugin
 from cms.plugin_pool import plugin_pool
@@ -20,7 +20,7 @@ class CascadeModelBase(CMSPlugin):
         abstract = True
 
     cmsplugin_ptr = models.OneToOneField(CMSPlugin, related_name='+', parent_link=True, on_delete=models.CASCADE)
-    glossary = JSONField(blank=True, default={})
+    glossary = JSONField(blank=True, default=dict)
 
     def __str__(self):
         return self.plugin_class.get_identifier(self)

@@ -55,7 +55,9 @@ class JSONMultiWidget(widgets.MultiWidget):
                 result[field.name] = list(map(escape, data.getlist(field.name)))
             else:
                 result[field.name] = escape(data.get(field.name, ''))
-        return result
+        # Django's built-in JSONField expects bound widget data to be a JSON
+        # string and converts it back to a dictionary during form cleaning.
+        return json.dumps(result)
 
     def value_omitted_from_data(self, data, files, name):
         # required since Django-1.10 during invocation of `construct_instance`
@@ -91,7 +93,7 @@ class JSONMultiWidget(widgets.MultiWidget):
 
 
 class NumberInputWidget(widgets.NumberInput):
-    validation_pattern = re.compile('^-?\d+(\.\d{1,2})?$')
+    validation_pattern = re.compile(r'^-?\d+(\.\d{1,2})?$')
     required_message = _("In '%(label)s': This field is required.")
     invalid_message = _("In '%(label)s': Value '%(value)s' shall contain a valid decimal number.")
 
@@ -255,7 +257,7 @@ class MultipleTextInputWidget(widgets.MultiWidget):
             values[key] = escape(data.get('{0}-{1}'.format(name, key), ''))
         return values
 
-    def render(self, name, value, attr, renderer=None):
+    def render(self, name, value, attrs, renderer=None):
         widgets = []
         values = value or {}
         elem_id = attrs['id']

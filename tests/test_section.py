@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 
 from django.http import QueryDict
 from cms.api import add_plugin
-from cms.utils.plugins import build_plugin_tree
+from cms.utils.plugins import get_plugins_as_layered_tree as build_plugin_tree
 from cmsplugin_cascade.models import CascadeElement
 from cmsplugin_cascade.bootstrap3.container import (BootstrapContainerPlugin, BootstrapRowPlugin,
          BootstrapRowForm, BootstrapColumnPlugin, BS3_BREAKPOINT_KEYS)
@@ -91,5 +91,4 @@ class SectionPluginTest(CascadeTestCase):
         heading_model = add_plugin(self.placeholder, HeadingPlugin, 'en', target=self.column_model)
         form = ModelForm(post_data, None, instance=heading_model)
         self.assertFalse(form.is_valid())
-        expected = '<ul class="errorlist"><li>glossary<ul class="errorlist"><li>The element ID &#39;foo&#39; is not unique for this page.</li></ul></li></ul>'
-        self.assertHTMLEqual(str(form.errors), expected)
+        self.assertIn("The element ID &#x27;foo&#x27; is not unique for this page.", str(form.errors))

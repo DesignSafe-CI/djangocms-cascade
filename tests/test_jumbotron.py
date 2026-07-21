@@ -9,7 +9,7 @@ from filer.models.foldermodels import Folder
 from filer.models.imagemodels import Image
 
 from cms.api import add_plugin
-from cms.utils.plugins import build_plugin_tree
+from cms.utils.plugins import get_plugins_as_layered_tree as build_plugin_tree
 
 from cmsplugin_cascade import app_settings
 from cmsplugin_cascade.bootstrap3.container import (BootstrapContainerPlugin, BootstrapRowPlugin,

@@ -78,7 +78,7 @@ class LinkForm(ModelForm):
         except AttributeError:
             site = Site.objects.get_current()
         choices = [(p.pk, '{0} ({1})'.format(p.get_page_title(), p.get_absolute_url()))
-                   for p in Page.objects.drafts().on_site(site)]
+                   for p in Page.objects.filter(node__site=site)]
         self.base_fields['cms_page'].choices = choices
 
         if callable(set_initial_linktype):

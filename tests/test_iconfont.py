@@ -13,7 +13,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from filer.admin.clipboardadmin import ajax_upload
 
 from cms.api import add_plugin
-from cms.utils.plugins import build_plugin_tree
+from cms.utils.plugins import get_plugins_as_layered_tree as build_plugin_tree
 
 from cmsplugin_cascade import app_settings
 from cmsplugin_cascade.models import IconFont
@@ -44,7 +44,7 @@ class IconFontTestCase(CascadeTestCase):
             response = ajax_upload(request)
             self.assertEqual(response.status_code, 200)
             content = json.loads(response.content.decode('utf-8'))
-            self.assertDictContainsSubset({'label': 'fontello-b504201f.zip'}, content)
+            self.assertEqual(content['label'], 'fontello-b504201f.zip')
 
             # save the form and submit the remaining fields
             add_iconfont_url = reverse('admin:cmsplugin_cascade_iconfont_add')
@@ -59,7 +59,7 @@ class IconFontTestCase(CascadeTestCase):
             self.assertEqual(resolver_match.url_name, 'cmsplugin_cascade_iconfont_change')
 
             # check the content of the uploaded file
-            icon_font = IconFont.objects.get(pk=resolver_match.args[0])
+            icon_font = IconFont.objects.get(pk=resolver_match.kwargs['object_id'])
             self.assertEqual(icon_font.identifier, "Fontellico")
             self.assertEqual(icon_font.config_data['name'], 'fontelico')
             self.assertEqual(len(icon_font.config_data['glyphs']), 34)

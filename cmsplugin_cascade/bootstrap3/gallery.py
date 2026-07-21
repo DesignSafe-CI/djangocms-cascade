@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from django.apps import apps
 from django.forms import widgets, ModelChoiceField, CharField
 from django.forms.models import ModelForm
 from django.db.models.fields.related import ManyToOneRel
@@ -13,7 +14,6 @@ from filer.fields.image import AdminFileWidget, FilerImageField
 from filer.models.imagemodels import Image
 
 from cms.plugin_pool import plugin_pool
-from cms.utils.compat.dj import is_installed
 
 from cmsplugin_cascade.fields import GlossaryField
 from cmsplugin_cascade.models import SortableInlineCascadeElement
@@ -22,7 +22,7 @@ from cmsplugin_cascade.plugin_base import CascadePluginBase, create_proxy_model
 from cmsplugin_cascade.widgets import CascadingSizeWidget
 from . import utils
 
-if is_installed('adminsortable2'):
+if apps.is_installed('adminsortable2'):
     from adminsortable2.admin import SortableInlineAdminMixin
 else:
     SortableInlineAdminMixin = type(str('SortableInlineAdminMixin'), (object,), {})
@@ -54,7 +54,7 @@ class GalleryImageForm(ModelForm):
         except KeyError:
             self.base_fields['image_file'].initial = None
         self.base_fields['image_file'].widget = AdminFileWidget(ManyToOneRel(FilerImageField, Image, 'file_ptr'), site)
-        if not is_installed('adminsortable2'):
+        if not apps.is_installed('adminsortable2'):
             self.base_fields['order'].widget = widgets.HiddenInput()
             self.base_fields['order'].initial = 0
         super(GalleryImageForm, self).__init__(*args, **kwargs)

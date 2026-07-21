@@ -12,7 +12,7 @@ from django.utils.functional import cached_property
 from six.moves.urllib.parse import urljoin
 from django.utils.translation import gettext_lazy as _
 
-from jsonfield.fields import JSONField
+from django.db.models import JSONField
 from filer.fields.file import FilerFileField
 
 from cms.extensions import PageExtension
@@ -39,7 +39,7 @@ class SharedGlossary(models.Model):
         unique=True,
     )
 
-    glossary = JSONField(null=True, blank=True, default={})
+    glossary = JSONField(null=True, blank=True, default=dict)
 
     class Meta:
         unique_together = ['plugin_type', 'identifier']
@@ -106,7 +106,7 @@ class InlineCascadeElement(models.Model):
         on_delete=models.CASCADE
     )
 
-    glossary = JSONField(blank=True, default={})
+    glossary = JSONField(blank=True, default=dict)
 
     class Meta:
         db_table = 'cmsplugin_cascade_inline'
@@ -114,7 +114,7 @@ class InlineCascadeElement(models.Model):
 
 class SortableInlineCascadeElement(models.Model):
     cascade_element = models.ForeignKey(CascadeElement, related_name='sortinline_elements', on_delete=models.CASCADE)
-    glossary = JSONField(blank=True, default={})
+    glossary = JSONField(blank=True, default=dict)
     order = models.PositiveIntegerField(verbose_name=_("Sort by"), db_index=True)
 
     class Meta:
@@ -147,13 +147,13 @@ class PluginExtraFields(models.Model):
     css_classes = JSONField(
         null=True,
         blank=True,
-        default={},
+        default=dict,
     )
 
     inline_styles = JSONField(
         null=True,
         blank=True,
-        default={},
+        default=dict,
     )
 
     class Meta:
@@ -188,7 +188,7 @@ class CascadeClipboard(models.Model):
     data = JSONField(
         null=True,
         blank=True,
-        default={},
+        default=dict,
     )
 
     class Meta:
@@ -205,13 +205,13 @@ class CascadePage(PageExtension):
     """
     settings = JSONField(
         blank=True,
-        default={},
+        default=dict,
         help_text=_("User editable settings for this page."),
     )
 
     glossary = JSONField(
         blank=True,
-        default={},
+        default=dict,
         help_text=_("Store for arbitrary page data."),
     )
 

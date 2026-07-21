@@ -81,7 +81,7 @@ class SphinxDocsLinkPlugin(LinkPluginBase):
     def get_link(cls, obj):
         link = obj.glossary.get('link', {})
         if link.get('type') == 'documentation':
-            page = Page.objects.filter(navigation_extenders='DocumentationMenu', publisher_is_draft=False).first()
+            page = Page.objects.filter(navigation_extenders='DocumentationMenu').first()
             if page:
-                return page.get_public_url()
+                return page.get_absolute_url()
         return super(SphinxDocsLinkPlugin, cls).get_link(obj)
