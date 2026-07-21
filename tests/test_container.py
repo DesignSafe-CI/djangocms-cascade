@@ -3,7 +3,10 @@ from __future__ import unicode_literals
 
 from django.http import QueryDict
 from cms.api import add_plugin, create_page
-from cms.utils.plugins import get_plugins_as_layered_tree as build_plugin_tree
+from cms.utils.plugins import (
+    get_plugin_restrictions,
+    get_plugins_as_layered_tree as build_plugin_tree,
+)
 from cmsplugin_cascade.models import CascadeElement
 from cmsplugin_cascade.bootstrap3.container import (BootstrapContainerPlugin, BootstrapRowPlugin,
          BootstrapRowForm, BootstrapColumnPlugin, BS3_BREAKPOINT_KEYS)
@@ -86,3 +89,26 @@ class ContainerPluginTest(CascadeTestCase):
         self.assertHTMLEqual(html, '<div class="container"><div class="row">' +
             '<div class="col-sm-3 col-sm-offset-1"></div><div class="col-sm-4 hidden-sm"></div><div class="col-sm-4"></div>' +
             '</div></div>')
+
+    def test_cms5_cached_plugin_restrictions(self):
+        container_model = add_plugin(
+            self.placeholder,
+            BootstrapContainerPlugin,
+            "en",
+            glossary={"breakpoints": BS3_BREAKPOINT_KEYS},
+        )
+        restrictions_cache = {}
+
+        get_plugin_restrictions(
+            container_model,
+            page=self.home_page,
+            restrictions_cache=restrictions_cache,
+        )
+        parent_classes, child_classes = get_plugin_restrictions(
+            container_model,
+            page=self.home_page,
+            restrictions_cache=restrictions_cache,
+        )
+
+        self.assertIsInstance(parent_classes, list)
+        self.assertIsInstance(child_classes, list)
