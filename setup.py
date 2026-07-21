@@ -35,7 +35,7 @@ setup(
         'jsonfield',
         'django-classy-tags>=4.1',
         'Django>=5.2,<5.3',
-        'django-cms>=4.1,<4.2',
+        'django-cms>=5.0,<5.1',
         'djangocms-text-ckeditor>=5.1',
     ],
     license='LICENSE-MIT',

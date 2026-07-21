@@ -27,7 +27,7 @@ class CascadeModelBase(CMSPlugin):
 
     @cached_property
     def plugin_class(self):
-        return self.get_plugin_class()
+        return plugin_pool.get_plugin(self.plugin_type)
 
     @property
     def tag_type(self):

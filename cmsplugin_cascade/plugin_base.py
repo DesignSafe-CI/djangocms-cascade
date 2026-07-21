@@ -230,7 +230,7 @@ class TransparentContainer(TransparentWrapper):
             return _leaf_transparent_plugins
         except NameError:
             _leaf_transparent_plugins = [
-                plugin.__name__ for plugin in plugin_pool.get_all_plugins()
+                plugin.__name__ for plugin in plugin_pool.get_all_plugins(root_plugin=False)
                     if issubclass(plugin, TransparentContainer)
             ]
             return _leaf_transparent_plugins
