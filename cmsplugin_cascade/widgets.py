@@ -255,7 +255,7 @@ class MultipleTextInputWidget(widgets.MultiWidget):
             values[key] = escape(data.get('{0}-{1}'.format(name, key), ''))
         return values
 
-    def render(self, name, value, attr, renderer=None):
+    def render(self, name, value, attrs=None, renderer=None):
         widgets = []
         values = value or {}
         elem_id = attrs['id']

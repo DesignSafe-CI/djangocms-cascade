@@ -8,8 +8,9 @@ from django.urls import reverse
 from django.http import QueryDict
 
 from cms.api import add_plugin
+from cmsplugin_cascade.compat import CMS4
 from cms.toolbar.toolbar import CMSToolbar
-from cms.utils.plugins import build_plugin_tree
+from tests.utils import build_plugin_tree
 
 from cmsplugin_cascade.models import CascadeElement, CascadeClipboard
 from cmsplugin_cascade.bootstrap3.container import (BootstrapContainerPlugin, BootstrapRowPlugin,
@@ -157,7 +158,7 @@ class ClipboardPluginTest(CascadeTestCase):
             self.assertEqual(request.toolbar.clipboard.cmsplugin_set.count(), 0)
 
             # copy plugins from placeholder to clipboard
-            copy_plugins_url = reverse('admin:cms_page_copy_plugins')  # + '?cms_path=%2Fen%2F'
+            copy_plugins_url = reverse('admin:cms_placeholder_copy_plugins' if CMS4 else 'admin:cms_page_copy_plugins')  # + '?cms_path=%2Fen%2F'
             response = self.client.post(copy_plugins_url, data)
             self.assertEqual(response.status_code, 200)
 
@@ -170,7 +171,7 @@ class ClipboardPluginTest(CascadeTestCase):
             response = self.client.get(change_clipboard_url, data)
             soup = BeautifulSoup(response.content)
             ul = soup.find('ul', class_='messagelist')
-            self.assertEqual(ul.li.text, 'The Persisted Clipboard Content "Test saved clipboard" was added successfully. You may edit it again below.')
+            self.assertEqual(ul.li.text.replace('“', '"').replace('”', '"'), 'The Persisted Clipboard Content "Test saved clipboard" was added successfully. You may edit it again below.')
             self.assertEqual(CascadeClipboard.objects.all().count(), 1)
 
             # now examine the serialized data in the clipboard
@@ -199,7 +200,7 @@ class ClipboardPluginTest(CascadeTestCase):
             self.assertEqual(response.status_code, 200)
             soup = BeautifulSoup(response.content, 'html.parser')
             ul = soup.find('ul', class_='messagelist')
-            self.assertEqual(ul.li.text, 'The Persisted Clipboard Content "Test saved clipboard" was changed successfully. You may edit it again below.')
+            self.assertEqual(ul.li.text.replace('“', '"').replace('”', '"'), 'The Persisted Clipboard Content "Test saved clipboard" was changed successfully. You may edit it again below.')
 
             # check if clipboard has been populated with plugins from serialized data
             ref_plugin = request.toolbar.clipboard.get_plugins().first()

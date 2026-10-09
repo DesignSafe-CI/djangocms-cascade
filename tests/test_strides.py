@@ -71,7 +71,7 @@ class StridePluginTest(CascadeTestCase):
 
     def upload_icon_font(self):
         UserModel = get_user_model()
-        admin_user = UserModel.objects.get(username='admin')
+        admin_user = UserModel.objects.create_superuser('admin', 'admin@example.com', 'admin')
         with self.login_user_context(admin_user):
             filename = os.path.join(os.path.dirname(__file__), 'assets/fontello-b504201f.zip')
             with open(filename, 'rb') as zipfile:

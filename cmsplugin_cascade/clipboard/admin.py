@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 
 from django import VERSION as DJANGO_VERSION
 from django.contrib import admin
-from django.contrib.admin.templatetags.admin_static import static
+from django.templatetags.static import static
 from django.forms import widgets
 from django.forms.utils import flatatt
 from django.utils.encoding import force_str
@@ -20,6 +20,7 @@ from djangocms_text_ckeditor.models import Text
 from djangocms_text_ckeditor.utils import plugin_tags_to_id_list, replace_plugin_tags
 
 from cmsplugin_cascade.models import CascadeElement, CascadeClipboard
+from cmsplugin_cascade.compat import clear_placeholder
 
 
 class JSONAdminWidget(widgets.Textarea):
@@ -27,7 +28,8 @@ class JSONAdminWidget(widgets.Textarea):
         attrs = {'cols': '40', 'rows': '3'}
         super(JSONAdminWidget, self).__init__(attrs)
 
-    def render(self, name, value, attrs=None):
+    def render(self, name, value, attrs=None, renderer=None):
+        attrs = attrs or {}
         if value is None:
             value = ''
         if DJANGO_VERSION < (1, 11):
@@ -149,5 +151,5 @@ class CascadeClipboardAdmin(admin.ModelAdmin):
             # remove old entries from the clipboard
             root_plugin = ref_plugin.cms_placeholderreference
             inst = ref_plugin.get_plugin_instance()[0]
-            inst.placeholder_ref.get_plugins().delete()
+            clear_placeholder(inst.placeholder_ref)
         plugins_from_data(root_plugin.placeholder_ref, None, data['plugins'])

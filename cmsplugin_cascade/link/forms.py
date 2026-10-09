@@ -11,6 +11,7 @@ from django.utils.module_loading import import_string
 from django.utils.translation import gettext_lazy as _
 
 from cms.models import Page
+from cmsplugin_cascade.compat import get_page_queryset
 from cmsplugin_cascade.models import CascadePage
 from cmsplugin_cascade.utils import validate_link
 
@@ -78,7 +79,7 @@ class LinkForm(ModelForm):
         except AttributeError:
             site = Site.objects.get_current()
         choices = [(p.pk, '{0} ({1})'.format(p.get_page_title(), p.get_absolute_url()))
-                   for p in Page.objects.drafts().on_site(site)]
+                   for p in get_page_queryset(site)]
         self.base_fields['cms_page'].choices = choices
 
         if callable(set_initial_linktype):

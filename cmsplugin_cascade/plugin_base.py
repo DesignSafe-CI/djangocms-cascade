@@ -12,10 +12,11 @@ from django.utils.text import format_lazy as string_concat
 from django.utils.safestring import SafeText, mark_safe
 
 from cms.plugin_base import CMSPluginBaseMetaclass, CMSPluginBase
-from cms.utils.compat.dj import is_installed
+from cms.models import CMSPlugin
+from cmsplugin_cascade.compat import is_installed
 
 from . import app_settings
-from .fields import GlossaryField
+from .fields import GlossaryField, GlossaryFormField
 from .mixins import CascadePluginMixin
 from .models_base import CascadeModelBase
 from .models import CascadeElement, SharableCascadeElement
@@ -368,7 +369,9 @@ class CascadePluginBase(six.with_metaclass(CascadePluginBaseMetaclass)):
         glossary_fields = kwargs.pop('glossary_fields', self.glossary_fields)
         widgets.update(glossary=JSONMultiWidget(glossary_fields))
         labels.update(glossary='')  # remove label for glossary, since each subfields provides a label itself
-        kwargs.update(widgets=widgets, labels=labels)
+        field_classes = kwargs.pop('field_classes', {})
+        field_classes['glossary'] = GlossaryFormField
+        kwargs.update(widgets=widgets, labels=labels, field_classes=field_classes)
         form = super(CascadePluginBase, self).get_form(request, obj, **kwargs)
         # help_text can not be cleared using an empty string in modelform_factory
         form.base_fields['glossary'].help_text = ''
@@ -425,7 +428,9 @@ class CascadePluginBase(six.with_metaclass(CascadePluginBaseMetaclass)):
         Return the previous plugin instance for the given object.
         This differs from `obj.get_prev_sibling()` which returns an unsorted sibling.
         """
-        ordered_siblings = obj.get_siblings().filter(placeholder=obj.placeholder).order_by('position')
+        ordered_siblings = CMSPlugin.objects.filter(
+            parent_id=obj.parent_id, placeholder_id=obj.placeholder_id, language=obj.language,
+        ).order_by('position')
         pos = list(ordered_siblings).index(obj.cmsplugin_ptr)
         if pos > 0:
             prev_sibling = ordered_siblings[pos - 1]
@@ -436,7 +441,9 @@ class CascadePluginBase(six.with_metaclass(CascadePluginBaseMetaclass)):
         Return the next plugin instance for the given object.
         This differs from `obj.get_next_sibling()` which returns an unsorted sibling.
         """
-        ordered_siblings = obj.get_siblings().filter(placeholder=obj.placeholder).order_by('position')
+        ordered_siblings = CMSPlugin.objects.filter(
+            parent_id=obj.parent_id, placeholder_id=obj.placeholder_id, language=obj.language,
+        ).order_by('position')
         pos = list(ordered_siblings).index(obj.cmsplugin_ptr)
         if pos < ordered_siblings.count() - 1:
             next_sibling = ordered_siblings[pos + 1]
@@ -471,7 +478,8 @@ class CascadePluginBase(six.with_metaclass(CascadePluginBaseMetaclass)):
         Returns True, if the plugin is in "edit mode".
         """
         toolbar = getattr(request, 'toolbar', None)
-        edit_mode = getattr(toolbar, 'edit_mode', False) and getattr(placeholder, 'is_editable', True)
+        edit_mode = getattr(toolbar, 'edit_mode_active', getattr(toolbar, 'edit_mode', False))
+        edit_mode = edit_mode and getattr(placeholder, 'is_editable', True)
         if edit_mode:
             edit_mode = placeholder.has_change_permission(request.user)
         return edit_mode

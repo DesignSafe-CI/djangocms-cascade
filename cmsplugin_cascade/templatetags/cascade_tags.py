@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 import io
 import json
 import os
-from distutils.version import LooseVersion
+from packaging.version import Version
 
 from cms import __version__ as cms_version
 from cms.toolbar.utils import get_toolbar_from_request
@@ -19,7 +19,7 @@ from classytags.arguments import Argument
 from classytags.core import Options, Tag
 
 register = template.Library()
-CMS_LT_3_4 = LooseVersion(cms_version) < LooseVersion('3.5')
+CMS_LT_3_4 = Version(cms_version) < Version('3.5')
 
 
 class StrideRenderer(Tag):

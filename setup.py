@@ -14,6 +14,8 @@ CLASSIFIERS = [
     'Framework :: Django :: 1.9',
     'Framework :: Django :: 1.10',
     'Framework :: Django :: 1.11',
+    'Framework :: Django :: 4.2',
+    'Framework :: Django :: 5.2',
     'Intended Audience :: Developers',
     'License :: OSI Approved :: MIT License',
     'Operating System :: OS Independent',
@@ -23,6 +25,9 @@ CLASSIFIERS = [
     'Programming Language :: Python :: 3.4',
     'Programming Language :: Python :: 3.5',
     'Programming Language :: Python :: 3.6',
+    'Programming Language :: Python :: 3.11',
+    'Programming Language :: Python :: 3.12',
+    'Programming Language :: Python :: 3.13',
 ]
 
 setup(
@@ -36,7 +41,9 @@ setup(
     install_requires=[
         'jsonfield',
         'django-classy-tags>=0.8',
-        'django-cms>=3.4,<4',
+        'django-cms>=3.4,!=4.0.*',
+        'packaging',
+        'six',
         'djangocms-text-ckeditor>=3.4',
     ],
     license='LICENSE-MIT',

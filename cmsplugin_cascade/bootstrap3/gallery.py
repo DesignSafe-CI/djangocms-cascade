@@ -13,7 +13,7 @@ from filer.fields.image import AdminFileWidget, FilerImageField
 from filer.models.imagemodels import Image
 
 from cms.plugin_pool import plugin_pool
-from cms.utils.compat.dj import is_installed
+from cmsplugin_cascade.compat import is_installed
 
 from cmsplugin_cascade.fields import GlossaryField
 from cmsplugin_cascade.models import SortableInlineCascadeElement

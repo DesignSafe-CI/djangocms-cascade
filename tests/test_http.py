@@ -5,8 +5,14 @@ from django.conf import settings
 from django.contrib import admin
 from django.test.utils import override_settings
 from cms.models import Page
-from cms.utils.compat.dj import is_installed
-from cms.test_utils.testcases import CMSTestCase, URL_CMS_PAGE_ADD, URL_CMS_PLUGIN_ADD
+from cmsplugin_cascade.compat import is_installed
+from cms.test_utils.testcases import CMSTestCase
+
+try:
+    from cms.test_utils.testcases import URL_CMS_PAGE_ADD, URL_CMS_PLUGIN_ADD
+except ImportError:
+    # These legacy HTTP tests are skipped; CMS 4 no longer exports these constants.
+    URL_CMS_PAGE_ADD = URL_CMS_PLUGIN_ADD = None
 import pytest
 
 APPS_WITHOUT_REVERSION = [app for app in settings.INSTALLED_APPS if app != 'reversion']

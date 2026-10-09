@@ -8,6 +8,7 @@ from django.utils.functional import cached_property
 from jsonfield.fields import JSONField
 
 from cms.models import CMSPlugin
+from cmsplugin_cascade.compat import CMS4, get_placeholder_template
 from cms.plugin_pool import plugin_pool
 from cms.utils.placeholder import get_placeholder_conf
 
@@ -27,7 +28,7 @@ class CascadeModelBase(CMSPlugin):
 
     @cached_property
     def plugin_class(self):
-        return self.get_plugin_class()
+        return plugin_pool.get_plugin(self.plugin_type)
 
     @property
     def tag_type(self):
@@ -64,7 +65,7 @@ class CascadeModelBase(CMSPlugin):
         if parent:
             return parent.get_complete_glossary()
         # otherwise use self.placeholder.glossary as the starting dictionary
-        template = self.placeholder.page.template if self.placeholder.page else None
+        template = get_placeholder_template(self.placeholder)
         return get_placeholder_conf('glossary', self.placeholder.slot, template=template, default={})
 
     def get_complete_glossary(self):
@@ -105,7 +106,7 @@ class CascadeModelBase(CMSPlugin):
         sanitized = self.plugin_class.sanitize_model(self)
         if sanitize_only:
             if sanitized:
-                super(CascadeModelBase, self).save(no_signals=True)
+                super(CascadeModelBase, self).save(**({} if CMS4 else {'no_signals': True}))
         else:
             super(CascadeModelBase, self).save(*args, **kwargs)
 

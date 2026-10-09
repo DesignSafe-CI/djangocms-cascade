@@ -13,6 +13,7 @@ from django.utils.translation import gettext_lazy as _
 
 class CascadeConfig(AppConfig):
     name = 'cmsplugin_cascade'
+    default_auto_field = 'django.db.models.AutoField'
     verbose_name = _("django CMS Cascade")
     default_permissions = ('add', 'change', 'delete')
 
@@ -81,7 +82,7 @@ class CascadeConfig(AppConfig):
         for perm in self.default_permissions:
             searched_perms.append((
                 '{0}_{1}'.format(perm, proxy_model._meta.model_name),
-                "Can {0} {1}".format(perm, proxy_model._meta.verbose_name_raw)
+                "Can {0} {1}".format(perm, proxy_model._meta.verbose_name)
             ))
 
         all_perms = set(Permission.objects.filter(

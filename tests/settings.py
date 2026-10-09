@@ -1,5 +1,7 @@
 from __future__ import unicode_literals
 
+import tempfile
+
 from django.urls import reverse_lazy
 
 from cmsplugin_cascade.extra_fields.config import PluginExtraFieldsConfig
@@ -194,3 +196,11 @@ CKEDITOR_SETTINGS = {
     ],
     'stylesSet': format_lazy('default:{}', reverse_lazy('admin:cascade_texticon_wysiwig_config')),
 }
+
+MIDDLEWARE = MIDDLEWARE_CLASSES
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+CMS_CONFIRM_VERSION4 = True
+ALLOWED_HOSTS = ['testserver', 'localhost']
+
+MEDIA_ROOT = tempfile.mkdtemp(prefix="cascade-tests-")
+CMSPLUGIN_CASCADE["icon_font_root"] = MEDIA_ROOT + "/icon_fonts"

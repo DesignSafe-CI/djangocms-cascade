@@ -11,6 +11,7 @@ from django.utils.translation import gettext_lazy as _
 
 from django_select2.forms import Select2Widget
 from cms.models.pagemodel import Page
+from cmsplugin_cascade.compat import CMS4
 from cmsplugin_cascade.link.plugin_base import LinkPluginBase
 from cmsplugin_cascade.link.forms import LinkForm
 
@@ -81,7 +82,10 @@ class SphinxDocsLinkPlugin(LinkPluginBase):
     def get_link(cls, obj):
         link = obj.glossary.get('link', {})
         if link.get('type') == 'documentation':
-            page = Page.objects.filter(navigation_extenders='DocumentationMenu', publisher_is_draft=False).first()
+            pages = Page.objects.filter(navigation_extenders='DocumentationMenu')
+            if not CMS4:
+                pages = pages.filter(publisher_is_draft=False)
+            page = pages.first()
             if page:
-                return page.get_public_url()
+                return page.get_absolute_url() if CMS4 else page.get_public_url()
         return super(SphinxDocsLinkPlugin, cls).get_link(obj)

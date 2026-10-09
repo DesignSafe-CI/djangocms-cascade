@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from distutils.version import LooseVersion
+from packaging.version import Version
 
 from django.urls import re_path as url
 from django.contrib import admin
@@ -33,7 +33,7 @@ class SegmentPluginModelMixin(object):
         return {}
 
     def render_plugin(self, context=None, placeholder=None, admin=False, processors=None):
-        assert LooseVersion(cms_version) < LooseVersion('3.4'), \
+        assert Version(cms_version) < Version('3.4'), \
                "Since CMS-3.4, method `render_plugin` shall not be invoked by model instance"
 
         context.update(self.get_context_override(context['request']))

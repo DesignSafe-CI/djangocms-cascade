@@ -8,6 +8,23 @@
 
 The Swiss army knife for working with Django-CMS plugins.
 
+## django CMS compatibility
+
+Cascade supports django CMS 3.x and django CMS 4.1 and later. The test suite covers
+CMS 3.11 and 4.1 with Django 4.2, and CMS 5.1 with Django 5.2. Choose Django,
+Python, and optional plugin dependencies supported by your installed CMS release.
+
+On CMS 4.1, set `CMS_CONFIRM_VERSION4 = True` in your project settings as required
+by django CMS. Upgrading an existing CMS 3 database requires the CMS content
+migration process; installing this plugin update alone does not migrate CMS data.
+See the [official CMS migration tooling](https://github.com/django-cms/djangocms-4-migration).
+Cascade retains its existing model schema across the supported CMS generations.
+
+Run `tox` to test the current compatibility matrix, or install
+`tests/requirements.txt` together with your chosen CMS and Django versions and run
+`python -m pytest tests`. The original dependency list is retained in
+`tests/requirements-legacy.txt` for older CMS 3 environments.
+
 ## Why Use DjangoCMS-Cascade?
 
 **DjangoCMS-Cascade** is a collection of plugins for Django-CMS

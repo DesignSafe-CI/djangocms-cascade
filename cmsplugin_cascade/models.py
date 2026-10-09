@@ -200,9 +200,16 @@ class CascadeClipboard(models.Model):
 
 
 class CascadePage(PageExtension):
-    """
-    Keep arbitrary data tightly coupled to the CMS page.
-    """
+    """Keep arbitrary data tightly coupled to the CMS page."""
+
+    # CMS 5 removes this field from PageExtension. Retain Cascade's existing
+    # database schema so the same migrations continue to work on CMS 3 and 4+.
+    if not hasattr(PageExtension, 'public_extension'):
+        public_extension = models.OneToOneField(
+            'self', editable=False, null=True, on_delete=models.CASCADE,
+            related_name='draft_extension',
+        )
+
     settings = JSONField(
         blank=True,
         default={},

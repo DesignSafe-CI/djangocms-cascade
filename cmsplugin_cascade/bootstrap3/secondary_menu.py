@@ -5,6 +5,7 @@ from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _, get_language_from_request
 from cms.plugin_pool import plugin_pool
 from cms.models.pagemodel import Page
+from cmsplugin_cascade.compat import CMS4
 from cmsplugin_cascade.fields import GlossaryField
 from .plugin_base import BootstrapPluginBase
 
@@ -52,7 +53,10 @@ class BootstrapSecondaryMenuPlugin(BootstrapPluginBase):
     def get_form(self, request, obj=None, **kwargs):
         lang = get_language_from_request(request)
         choices = {}
-        for page in Page.objects.filter(reverse_id__isnull=False).order_by('publisher_is_draft'):
+        pages = Page.objects.filter(reverse_id__isnull=False)
+        if not CMS4:
+            pages = pages.order_by('publisher_is_draft')
+        for page in pages:
             if page.reverse_id not in choices:
                 choices[page.reverse_id] = page.get_title(lang)
         next(iter(self.glossary_fields)).widget.choices = list(choices.items())

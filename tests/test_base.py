@@ -2,26 +2,30 @@
 from __future__ import unicode_literals
 
 from django.contrib import admin
+from django.contrib.auth import get_user_model
 from django.template.context import Context
 
 from cms.api import create_page
 from cms.test_utils.testcases import CMSTestCase
 
-from djangocms_helper.base_test import BaseTestCase
+from cmsplugin_cascade.compat import CMS4
 
 
-class CascadeTestCase(CMSTestCase, BaseTestCase):
+class CascadeTestCase(CMSTestCase):
     home_page = None
 
     def setUp(self):
+        self.user = get_user_model().objects.create_superuser(
+            username="admin", email="admin@example.com", password="admin",
+        )
         self.home_page = create_page(title='HOME', template='testing.html', language='en')
         if not self.home_page.is_home:
             # >= Django CMS v3.5.x
             self.home_page.set_as_homepage()
 
-        self.placeholder = self.home_page.placeholders.get(slot='Main Content')
+        self.placeholder = self.home_page.get_placeholders('en').get(slot='Main Content') if CMS4 else self.home_page.placeholders.get(slot='Main Content')
 
-        self.request = self.get_request(self.home_page, 'en')
+        self.request = self.get_request(language='en', page=self.home_page)
         self.admin_site = admin.sites.AdminSite()
 
     def get_request_context(self):

@@ -10,7 +10,7 @@ from filer.models.foldermodels import Folder
 from filer.models.imagemodels import Image
 
 from cms.api import add_plugin
-from cms.utils.plugins import build_plugin_tree
+from tests.utils import build_plugin_tree
 
 from cmsplugin_cascade import app_settings
 from cmsplugin_cascade.models import SharableCascadeElement

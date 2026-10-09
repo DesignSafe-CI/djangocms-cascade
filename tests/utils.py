@@ -13,3 +13,9 @@ def get_request_context(request, extra_context=None):
     # The same problem seems to exist with request.user.
     context['user'] = request.user
     return context
+
+# CMS plugin tree helpers for both supported CMS generations.
+try:
+    from cms.utils.plugins import build_plugin_tree
+except ImportError:
+    from cms.utils.plugins import get_plugins_as_layered_tree as build_plugin_tree

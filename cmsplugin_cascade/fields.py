@@ -5,6 +5,19 @@ import warnings
 from django.forms import widgets
 from django.forms.utils import ErrorList
 from django.core.exceptions import ValidationError
+try:
+    from jsonfield.forms import JSONField
+except ImportError:  # jsonfield 1.x, used by older CMS 3 projects
+    from jsonfield.fields import JSONFormField as JSONField
+
+
+class GlossaryFormField(JSONField):
+    """Accept the dictionaries emitted by JSONMultiWidget on bound forms."""
+
+    def bound_data(self, data, initial):
+        if isinstance(data, dict) and not self.disabled:
+            return data
+        return super(GlossaryFormField, self).bound_data(data, initial)
 
 
 class GlossaryField(object):
