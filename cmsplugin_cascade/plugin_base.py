@@ -13,6 +13,7 @@ from django.utils.safestring import SafeText, mark_safe
 
 from cms.plugin_base import CMSPluginBaseMetaclass, CMSPluginBase
 from cms.models import CMSPlugin
+from cms.plugin_pool import plugin_pool
 from cmsplugin_cascade.compat import is_installed
 
 from . import app_settings
@@ -185,20 +186,27 @@ class TransparentWrapper(object):
     """
     child_plugins_cache = False
     parent_plugins_cache = False
+    cache_child_classes = False
+    cache_parent_classes = False
 
     @classmethod
-    def get_child_classes(cls, slot, page, instance=None):
+    def get_child_classes(cls, slot, page, instance=None, only_uncached=False):
         if hasattr(cls, 'direct_child_classes'):
-            return cls.direct_child_classes
-        child_classes = set(super(TransparentWrapper, cls).get_child_classes(slot, page, instance))
-        while True:
-            instance = instance.get_parent_instance() if instance and instance.parent else None
-            if instance is None:
-                child_classes.update(super(TransparentWrapper, cls).get_child_classes(slot, page, instance))
-                return list(child_classes)
-            if not issubclass(instance.plugin_class, TransparentWrapper):
-                child_classes.update(instance.plugin_class.get_child_classes(slot, page, instance))
-                return list(child_classes)
+            child_classes = cls.direct_child_classes
+        else:
+            child_classes = set(super(TransparentWrapper, cls).get_child_classes(slot, page, instance))
+            while True:
+                instance = instance.get_parent_instance() if instance and instance.parent else None
+                if instance is None:
+                    child_classes.update(super(TransparentWrapper, cls).get_child_classes(slot, page, instance))
+                    break
+                if not issubclass(instance.plugin_class, TransparentWrapper):
+                    child_classes.update(instance.plugin_class.get_child_classes(slot, page, instance))
+                    break
+        if only_uncached:
+            child_classes = [name for name in child_classes
+                             if not getattr(plugin_pool.get_plugin(name), 'cache_parent_classes', True)]
+        return list(child_classes)
 
     @classmethod
     def get_parent_classes(cls, slot, page, instance=None):
@@ -285,10 +293,12 @@ class CascadePluginBase(six.with_metaclass(CascadePluginBaseMetaclass)):
         return list(parent_classes)
 
     @classmethod
-    def get_child_classes(cls, slot, page, instance=None):
+    def get_child_classes(cls, slot, page, instance=None, only_uncached=False):
         plugin_type = cls.__name__
         child_classes = set()
         for child_class in cls.get_child_plugin_candidates(slot, page):
+            if only_uncached and getattr(child_class, 'cache_parent_classes', True):
+                continue
             if issubclass(child_class, CascadePluginBase):
                 own_child_classes = getattr(cls, 'child_classes', None) or []
                 child_parent_classes = child_class._get_parent_classes_transparent(slot, page, instance)

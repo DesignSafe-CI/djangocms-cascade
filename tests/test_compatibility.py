@@ -4,6 +4,7 @@ from unittest.mock import patch
 from cms.api import add_plugin
 from cms.models import CMSPlugin
 from cms.models.placeholdermodel import Placeholder
+from cms.utils.plugins import get_plugin_restrictions
 from django.contrib.sites.models import Site
 try:
     from cms.test_utils.util.context_managers import override_placeholder_conf
@@ -13,12 +14,44 @@ except ImportError:
         return override_settings(CMS_PLACEHOLDER_CONF=conf)
 
 from cmsplugin_cascade.bootstrap3.container import BootstrapContainerPlugin, BootstrapRowPlugin
+from cmsplugin_cascade.bootstrap3.accordion import BootstrapAccordionPlugin, BootstrapAccordionPanelPlugin
 from cmsplugin_cascade.bootstrap3.secondary_menu import BootstrapSecondaryMenuPlugin
 from cmsplugin_cascade.compat import get_placeholder_template, get_page_queryset
 from .test_base import CascadeTestCase
 
 
 class CMSCompatibilityTest(CascadeTestCase):
+    def test_child_classes_include_only_dynamic_children_when_requested(self):
+        slot = self.placeholder.slot
+        self.assertIn('BootstrapRowPlugin', BootstrapContainerPlugin.get_child_classes(
+            slot, None, only_uncached=False))
+        with patch.object(BootstrapRowPlugin, 'cache_parent_classes', True, create=True):
+            self.assertNotIn('BootstrapRowPlugin', BootstrapContainerPlugin.get_child_classes(
+                slot, None, only_uncached=True))
+        with patch.object(BootstrapRowPlugin, 'cache_parent_classes', False, create=True):
+            self.assertIn('BootstrapRowPlugin', BootstrapContainerPlugin.get_child_classes(
+                slot, None, only_uncached=True))
+
+    def test_transparent_wrapper_filters_direct_and_inherited_children(self):
+        slot = self.placeholder.slot
+        with patch.object(BootstrapAccordionPanelPlugin, 'cache_parent_classes', True):
+            self.assertNotIn('BootstrapAccordionPanelPlugin', BootstrapAccordionPlugin.get_child_classes(
+                slot, None, only_uncached=True))
+        with patch.object(BootstrapAccordionPanelPlugin, 'cache_parent_classes', False):
+            self.assertIn('BootstrapAccordionPanelPlugin', BootstrapAccordionPlugin.get_child_classes(
+                slot, None, only_uncached=True))
+        # Panels have no direct child list and inherit their ancestor's restrictions.
+        self.assertIsInstance(BootstrapAccordionPanelPlugin.get_child_classes(
+            slot, None, only_uncached=True), list)
+
+    def test_editor_restrictions_on_initial_and_cached_lookup(self):
+        instance = add_plugin(self.placeholder, BootstrapContainerPlugin, 'en')
+        cache = {}
+        for _ in range(2):
+            children, parents = get_plugin_restrictions(
+                instance, restrictions_cache=cache)
+            self.assertIn('BootstrapRowPlugin', children)
+
     def test_sibling_navigation_is_scoped_to_parent_placeholder_and_language(self):
         first = add_plugin(self.placeholder, BootstrapContainerPlugin, 'en')
         add_plugin(self.placeholder, BootstrapRowPlugin, 'en', target=first)
