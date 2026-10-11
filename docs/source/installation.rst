@@ -6,14 +6,20 @@ Install the latest stable release
 
 .. code-block:: bash
 
-	$ pip install djangocms-cascade
+	$ uv add djangocms-cascade
 
 or the current development release from github
 
 .. code-block:: bash
 
-	$ pip install -e git+https://github.com/jrief/djangocms-cascade.git#egg=djangocms-cascade
+	$ git clone https://github.com/jrief/djangocms-cascade.git
+	$ cd djangocms-cascade
+	$ uv sync --locked
 
+
+The current release requires Python 3.11 or later. For development and testing,
+see the repository README for uv commands and the current Django/CMS matrix.
+The combinations below document historical releases.
 
 Python Package Dependencies
 ===========================
@@ -61,7 +67,7 @@ in addition:
 
 .. code-block:: bash
 
-	$ pip install django-filer
+	$ uv add django-filer
 
 For a full list of working requirements see the `requirements folder`_ in the sources.
 

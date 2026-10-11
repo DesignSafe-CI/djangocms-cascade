@@ -20,10 +20,36 @@ migration process; installing this plugin update alone does not migrate CMS data
 See the [official CMS migration tooling](https://github.com/django-cms/djangocms-4-migration).
 Cascade retains its existing model schema across the supported CMS generations.
 
-Run `tox` to test the current compatibility matrix, or install
-`tests/requirements.txt` together with your chosen CMS and Django versions and run
-`python -m pytest tests`. The original dependency list is retained in
-`tests/requirements-legacy.txt` for older CMS 3 environments.
+## Development with uv
+
+Install [uv](https://docs.astral.sh/uv/getting-started/installation/), then run:
+
+```sh
+uv sync --locked
+uv run --locked python -m pytest tests
+uv run --locked tox
+```
+
+The default development environment uses Django 5.2 and CMS 5.1. Tox uses uv to
+install each combination in the compatibility matrix independently of the lockfile.
+The current package requires Python 3.11 or later; historical requirements in
+`requirements/` and `tests/requirements-legacy.txt` apply to older releases.
+
+Dependencies and package metadata live in `pyproject.toml`. Commit `uv.lock` after
+changing dependencies; use `uv lock --upgrade` to refresh locked versions.
+
+Build the source distribution and wheel with `uv build`. To publish a release,
+update both `project.version` in `pyproject.toml` and `__version__` in
+`cmsplugin_cascade/__init__.py`, then run `uv build --clear` and `uv publish`.
+
+## Migrating Bootstrap 3 content
+
+Run `uv run python manage.py convert_bootstrap3` in your Django project for a dry
+run. Add `--apply` to convert stored plugins to `djangocms-frontend`; rendering
+warnings require `--allow-lossy`, and plugins without equivalents require
+`--skip-unsupported` to leave them unchanged. See
+[setup, mappings, and limitations](docs/source/migrate-bootstrap3.rst), including
+how to avoid overlapping plugin registrations.
 
 ## Why Use DjangoCMS-Cascade?
 

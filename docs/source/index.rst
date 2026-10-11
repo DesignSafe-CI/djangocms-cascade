@@ -37,6 +37,7 @@ Contents:
     impatient
     introduction
     installation
+    migrate-bootstrap3
     link-plugin
     bootstrap3/index
     icon-fonts
