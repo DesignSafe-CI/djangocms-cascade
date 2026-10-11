@@ -18,8 +18,11 @@ or the current development release from github
 Python Package Dependencies
 ===========================
 
-Due to some incompatibilities in the API of Django, django-CMS and djangocms-text-ckeditor, please
-only use these combinations of Python package dependencies:
+The current release requires Python 3.10 or later, Django 4.2 or later,
+django CMS 3.11 or 4.1 and later, and djangocms-text_ 1.x. Use the compatibility
+matrix in ``tox.ini`` to select a tested combination.
+
+The combinations below apply only to historical Cascade releases:
 
 djangocms-cascade-0.11.x
 ------------------------
@@ -63,9 +66,10 @@ in addition:
 
 	$ pip install django-filer
 
-For a full list of working requirements see the `requirements folder`_ in the sources.
+For current test dependencies see the `test requirements`_ in the sources.
+The ``requirements`` folder contains historical dependencies for older releases.
 
-.. _requirements folder: https://github.com/jrief/djangocms-cascade/tree/master/requirements
+.. _test requirements: https://github.com/jrief/djangocms-cascade/blob/master/tests/requirements.txt
 
 
 Create a database schema
@@ -226,23 +230,40 @@ and add it to the configured Cascade plugins:
 Special settings when using the TextPlugin
 ------------------------------------------
 
-Since it is possible to add plugins from the Cascade ecosystem as children to the
-`djangocms-text-ckeditor`_, we must add a special configuration:
+Add ``djangocms_text`` to ``INSTALLED_APPS``. Its default TipTap editor supports
+Cascade's text-enabled plugins without CKEditor-specific settings.
+
+To retain the existing CKEditor 4 toolbar and icon-font previews, also add
+``djangocms_text.contrib.text_ckeditor4`` to ``INSTALLED_APPS`` and configure:
 
 .. code-block:: python
 
-	from django.core.urlresolvers import reverse_lazy
-	from cmsplugin_cascade.utils import format_lazy
+	from django.urls import reverse_lazy
+	from django.utils.text import format_lazy
 
-	CKEDITOR_SETTINGS = {
+	TEXT_EDITOR = 'djangocms_text.contrib.text_ckeditor4.ckeditor4'
+	TEXT_EDITOR_SETTINGS = {
 	    'language': '{{ language }}',
 	    'skin': 'moono-lisa',
 	    'toolbar': 'CMS',
 	    'stylesSet': format_lazy('default:{}', reverse_lazy('admin:cascade_texticon_wysiwig_config')),
 	}
 
-.. note:: The skin ``moono-lisa`` has been introduced in Django CKEditor version 3.5, so if you upgrade from an earlier
-	version, please adopt this in your settings.
+Migrating an existing project
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Back up the database, uninstall ``djangocms-text-ckeditor``, and install
+``djangocms-text``. Replace ``djangocms_text_ckeditor`` with ``djangocms_text`` in
+``INSTALLED_APPS``, update imports, and run ``python manage.py migrate``.
+The new package's migrations transfer existing text content and remove the old
+editor tables. Keep ``TextPlugin`` names and embedded plugin IDs unchanged.
+
+Rename ``CKEDITOR_SETTINGS`` to ``TEXT_EDITOR_SETTINGS`` when retaining CKEditor 4.
+These settings are specific to that frontend. TipTap can normalize custom HTML
+when text is first edited; use the bundled CKEditor 4 frontend if existing
+formatting must be preserved. See the `upstream migration guide`_.
+
+.. _upstream migration guide: https://github.com/django-cms/djangocms-text#migrating-from-djangocms-text-ckeditor
 
 
 Restrict plugins to a particular placeholder
@@ -363,3 +384,5 @@ template coding anymore.
 .. _django-filer: https://github.com/divio/django-filer
 .. _Node Package Manager: https://nodejs.org/en/download/
 .. _browser support: https://caniuse.com/#search=srcset
+
+.. _djangocms-text: https://github.com/django-cms/djangocms-text

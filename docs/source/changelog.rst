@@ -2,6 +2,16 @@
 Release History
 ===============
 
+Unreleased
+==========
+
+* Replace ``djangocms-text-ckeditor`` with ``djangocms-text`` 1.x. Update
+  ``INSTALLED_APPS`` and run migrations as described in the installation guide.
+* Use ``TEXT_EDITOR_SETTINGS`` for editor configuration. The demo retains the
+  bundled CKEditor 4 frontend; TipTap can be used without CKEditor icon settings.
+* Require Python 3.10 or later, Django 4.2 or later, and django CMS 3.11 or
+  4.1 and later.
+
 
 0.16.3
 ======

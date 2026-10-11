@@ -10,7 +10,7 @@ The Swiss army knife for working with Django-CMS plugins.
 
 ## django CMS compatibility
 
-Cascade supports django CMS 3.x and django CMS 4.1 and later. The test suite covers
+Cascade supports django CMS 3.11 and django CMS 4.1 and later. The test suite covers
 CMS 3.11 and 4.1 with Django 4.2, and CMS 5.1 with Django 5.2. Choose Django,
 Python, and optional plugin dependencies supported by your installed CMS release.
 
@@ -23,7 +23,22 @@ Cascade retains its existing model schema across the supported CMS generations.
 Run `tox` to test the current compatibility matrix, or install
 `tests/requirements.txt` together with your chosen CMS and Django versions and run
 `python -m pytest tests`. The original dependency list is retained in
-`tests/requirements-legacy.txt` for older CMS 3 environments.
+`tests/requirements-legacy.txt` as historical reference; it is not supported by the current release.
+
+## Text editor migration
+
+Cascade now uses [djangocms-text](https://github.com/django-cms/djangocms-text)
+1.x and requires Python 3.10 or later. Back up your database, uninstall
+`djangocms-text-ckeditor`, install the updated Cascade dependencies, replace
+`djangocms_text_ckeditor` with `djangocms_text` in `INSTALLED_APPS`, and run
+`python manage.py migrate`. The editor migrations transfer existing text and
+remove the old editor tables.
+
+TipTap is the default editor. To preserve the existing CKEditor 4 toolbar and
+icon-font previews, also add `djangocms_text.contrib.text_ckeditor4` to
+`INSTALLED_APPS`, set `TEXT_EDITOR = 'djangocms_text.contrib.text_ckeditor4.ckeditor4'`,
+and rename `CKEDITOR_SETTINGS` to `TEXT_EDITOR_SETTINGS`. The demo and tests use
+this frontend. Existing `TextPlugin` names and clipboard HTML remain compatible.
 
 ## Why Use DjangoCMS-Cascade?
 

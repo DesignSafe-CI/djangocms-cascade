@@ -9,6 +9,8 @@ from django.db.models.signals import pre_migrate, post_migrate
 from django.db.utils import DatabaseError
 from django.utils.encoding import force_str
 from django.utils.translation import gettext_lazy as _
+from djangocms_text.editors import get_editor_config
+from djangocms_text.settings import TEXT_EDITOR_SETTINGS
 
 
 class CascadeConfig(AppConfig):
@@ -18,10 +20,11 @@ class CascadeConfig(AppConfig):
     default_permissions = ('add', 'change', 'delete')
 
     def ready(self):
-        if 'cmsplugin_cascade.icon' in settings.INSTALLED_APPS:
-            stylesSet = force_str(settings.CKEDITOR_SETTINGS.get('stylesSet'))
+        if ('cmsplugin_cascade.icon' in settings.INSTALLED_APPS
+                and get_editor_config().name == 'ckeditor4'):
+            stylesSet = force_str(TEXT_EDITOR_SETTINGS.get('stylesSet'))
             if stylesSet != 'default:{}'.format(reverse('admin:cascade_texticon_wysiwig_config')):
-                msg = "settings.CKEDITOR_SETTINGS['stylesSet'] should be `format_lazy('default:{}', reverse_lazy('admin:cascade_texticon_wysiwig_config'))`"
+                msg = "settings.TEXT_EDITOR_SETTINGS['stylesSet'] should be `format_lazy('default:{}', reverse_lazy('admin:cascade_texticon_wysiwig_config'))`"
                 raise ImproperlyConfigured(msg)
 
         pre_migrate.connect(self.__class__.pre_migrate, sender=self)

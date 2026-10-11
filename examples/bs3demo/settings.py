@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sitemaps',
     #'reversion',
-    'djangocms_text_ckeditor',
+    'djangocms_text',
+    'djangocms_text.contrib.text_ckeditor4',
     'django_select2',
     'cmsplugin_cascade',
     'cmsplugin_cascade.clipboard',
@@ -251,7 +252,8 @@ CMS_PLACEHOLDER_CONF = {
     },
 }
 
-CKEDITOR_SETTINGS = {
+TEXT_EDITOR = 'djangocms_text.contrib.text_ckeditor4.ckeditor4'
+TEXT_EDITOR_SETTINGS = {
     'language': '{{ language }}',
     'skin': 'moono-lisa',
     'toolbar': 'CMS',

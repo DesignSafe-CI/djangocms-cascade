@@ -20,7 +20,7 @@ from filer.fields.image import AdminFileWidget, FilerImageField
 from filer.models.imagemodels import Image
 
 from cms.plugin_pool import plugin_pool
-from djangocms_text_ckeditor.fields import HTMLFormField
+from djangocms_text.fields import HTMLFormField
 
 from cmsplugin_cascade import app_settings
 from cmsplugin_cascade.fields import GlossaryField

@@ -16,8 +16,8 @@ from cms.plugin_pool import plugin_pool
 from cms.utils import get_language_from_request
 
 from jsonfield.fields import JSONField
-from djangocms_text_ckeditor.models import Text
-from djangocms_text_ckeditor.utils import plugin_tags_to_id_list, replace_plugin_tags
+from djangocms_text.models import Text
+from djangocms_text.utils import plugin_tags_to_id_list, replace_plugin_tags
 
 from cmsplugin_cascade.models import CascadeElement, CascadeClipboard
 from cmsplugin_cascade.compat import clear_placeholder

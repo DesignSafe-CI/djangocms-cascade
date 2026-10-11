@@ -1,30 +1,22 @@
 language: python
-      
-python:
-  - 2.7
-  - 3.4
-  - 3.5
-  - 3.6
 
-env:
-  matrix:
-  - DJANGO='django19' CMS='cms34'
-  - DJANGO='django110' CMS='cms34'
-  - DJANGO='django111' CMS='cms34'
-  - DJANGO='django111' CMS='cms35'
+jobs:
+  include:
+    - python: '3.11'
+      env: TOX_ENV=py311-django42-cms311
+    - python: '3.11'
+      env: TOX_ENV=py311-django42-cms41
+    - python: '3.12'
+      env: TOX_ENV=py312-django42-cms311
+    - python: '3.12'
+      env: TOX_ENV=py312-django42-cms41
+    - python: '3.12'
+      env: TOX_ENV=py312-django52-cms51
+    - python: '3.13'
+      env: TOX_ENV=py313-django52-cms51
 
 install:
   - pip install tox
 
-before_script:
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
-  - "if [[ $TRAVIS_PYTHON_VERSION == '2.7' ]]; then export PYVER=py27; fi"
-  - "if [[ $TRAVIS_PYTHON_VERSION == '3.4' ]]; then export PYVER=py34; fi"
-  - "if [[ $TRAVIS_PYTHON_VERSION == '3.5' ]]; then export PYVER=py35; fi"  
-  - "if [[ $TRAVIS_PYTHON_VERSION == '3.6' ]]; then export PYVER=py36; fi"
-
-  
-
 script:
-  - tox -e"$PYVER-$DJANGO-$CMS"
+  - tox -e "$TOX_ENV"

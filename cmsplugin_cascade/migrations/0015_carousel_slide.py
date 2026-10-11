@@ -12,7 +12,7 @@ from html import unescape
 from django.db import migrations
 from cms.api import add_plugin
 from cms.models.pluginmodel import CMSPlugin
-from djangocms_text_ckeditor.cms_plugins import TextPlugin
+from djangocms_text.cms_plugins import TextPlugin
 from cmsplugin_cascade.models import CascadeElement
 
 

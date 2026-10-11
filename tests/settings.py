@@ -76,7 +76,8 @@ INSTALLED_APPS = [
     'sekizai',
     'cms',
     'adminsortable2',
-    'djangocms_text_ckeditor',
+    'djangocms_text',
+    'djangocms_text.contrib.text_ckeditor4',
     'cmsplugin_cascade',
     'cmsplugin_cascade.clipboard',
     'cmsplugin_cascade.extra_fields',
@@ -177,9 +178,10 @@ THUMBNAIL_OPTIMIZE_COMMAND = {
     'jpeg': '/opt/local/bin/jpegoptim {filename}',
 }
 
-CKEDITOR_SETTINGS = {
+TEXT_EDITOR = 'djangocms_text.contrib.text_ckeditor4.ckeditor4'
+TEXT_EDITOR_SETTINGS = {
     'language': '{{ language }}',
-    'skin': 'moono',
+    'skin': 'moono-lisa',
     'toolbar': 'CMS',
     'toolbar_HTMLField': [
         ['Undo', 'Redo'],

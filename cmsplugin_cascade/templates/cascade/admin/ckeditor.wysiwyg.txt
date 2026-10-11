@@ -1,6 +1,14 @@
 (function() {
 	CKEDITOR.dtd.$removeEmpty.i = 0;
+	function addIconStyles(editor) {
 {% for icon_font in icon_fonts %}
-	CMS.CKEditor.editor.addContentsCss('{{ icon_font.get_stylesheet_url }}');
+		editor.addContentsCss('{{ icon_font.get_stylesheet_url|escapejs }}');
 {% endfor %}
+	}
+	Object.keys(CKEDITOR.instances).forEach(function(name) {
+		addIconStyles(CKEDITOR.instances[name]);
+	});
+	CKEDITOR.on('instanceCreated', function(event) {
+		addIconStyles(event.editor);
+	});
 })();

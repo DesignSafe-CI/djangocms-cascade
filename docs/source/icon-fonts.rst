@@ -41,17 +41,18 @@ ecosystem.
 If ``CMS_PLACEHOLDER_CONF`` is used to configure available plugins for each placeholder, assure
 that the ``TextIconPlugin`` is added to the list of ``text_only_plugins``.
 
-Since the CKEditor widget must load the font stylesheets for it's own WYSIWIG mode, we have to add
-this special setting to our configuration:
+For icon-font previews in the bundled CKEditor 4 frontend of ``djangocms-text``,
+add ``djangocms_text.contrib.text_ckeditor4`` to ``INSTALLED_APPS`` and configure:
 
 .. code-block:: python
 
-	from django.core.urlresolvers import reverse_lazy
-	from cmsplugin_cascade.utils import format_lazy
+	from django.urls import reverse_lazy
+	from django.utils.text import format_lazy
 
-	CKEDITOR_SETTINGS = {
+	TEXT_EDITOR = 'djangocms_text.contrib.text_ckeditor4.ckeditor4'
+	TEXT_EDITOR_SETTINGS = {
 	    ...
-	    'stylesSet': format_lazy(reverse_lazy('admin:cascade_texticon_wysiwig_config')),
+	    'stylesSet': format_lazy('default:{}', reverse_lazy('admin:cascade_texticon_wysiwig_config')),
 	}
 
 
@@ -107,7 +108,7 @@ about :doc:`sharable-fields`.
 Using the Icon Plugin in plain text
 ===================================
 
-If **django-CMS** is configured to use the **djangocms-ckeditor-widget**, then you may use the
+If **django-CMS** is configured to use the **djangocms-text CKEditor 4 frontend**, then you may use the
 **Icon Plugin** inside plain text. Place the cursor at the desired location in text and select
 **Icon** from the pull down menu **CMS Plugins**. This opens a popup where you may select the
 font family and the symbol. All other attributes described above, are not available with this

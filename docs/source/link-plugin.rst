@@ -26,7 +26,7 @@ tuple ``CMSPLUGIN_CASCADE_PLUGINS`` in the project's ``settings.py``.
 
 The behavior of this Plugin is what you expect from a Link editor. The field **Link Content** is the
 text displayed between the opening and closing ``<a>`` tag. If used in combination with
-djangocms-text-ckeditor_ the field automatically is filled out.
+djangocms-text_ the field automatically is filled out.
 
 By changing the **Link type**, the user can choose between three types of Links:
 
@@ -180,6 +180,6 @@ Now the select box for **Link type** will offer one additional option: "Product"
 selected, the site administrator can choose between all of the shops products.
 
 .. _djangocms-link: https://github.com/divio/djangocms-link
-.. _djangocms-text-ckeditor: https://github.com/divio/djangocms-text-ckeditor
+.. _djangocms-text: https://github.com/django-cms/djangocms-text
 .. _get_absolute_url: https://docs.djangoproject.com/en/stable/ref/models/instances/#get-absolute-url
 .. _django-shop: https://github.com/awesto/django-shop

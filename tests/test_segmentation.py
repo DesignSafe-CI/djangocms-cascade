@@ -8,7 +8,7 @@ from django.contrib.auth import get_user_model
 
 from cms.api import add_plugin
 from tests.utils import build_plugin_tree
-from djangocms_text_ckeditor.cms_plugins import TextPlugin
+from djangocms_text.cms_plugins import TextPlugin
 from cmsplugin_cascade.generic.cms_plugins import SimpleWrapperPlugin
 from cmsplugin_cascade.segmentation.cms_plugins import SegmentPlugin
 
