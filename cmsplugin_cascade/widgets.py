@@ -91,7 +91,7 @@ class JSONMultiWidget(widgets.MultiWidget):
 
 
 class NumberInputWidget(widgets.NumberInput):
-    validation_pattern = re.compile('^-?\d+(\.\d{1,2})?$')
+    validation_pattern = re.compile(r'^-?\d+(\.\d{1,2})?$')
     required_message = _("In '%(label)s': This field is required.")
     invalid_message = _("In '%(label)s': Value '%(value)s' shall contain a valid decimal number.")
 
@@ -158,7 +158,7 @@ class ColorPickerWidget(widgets.MultiWidget):
     """
     DEFAULT_COLOR = '#ffffff'
     DEFAULT_ATTRS = {'style': 'width: 5em;', 'type': 'color'}
-    validation_pattern = re.compile('^#[0-9a-f]{3}([0-9a-f]{3})?$')
+    validation_pattern = re.compile(r'^#[0-9a-f]{3}([0-9a-f]{3})?$')
     invalid_message = _("In '%(label)s': Value '%(value)s' is not a valid color.")
 
     def __init__(self, attrs=DEFAULT_ATTRS):
